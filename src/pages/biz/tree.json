@@ -1,0 +1,48 @@
+[{
+    "name": "企业商家部门分类", 
+    "isParent": true, 
+    "isOpen": true, 
+    "hasParent": true,
+    "openedIcon": "fa fa-folder-open-o", 
+    "closedIcon": "fa fa-folder-o", 
+    "buttons": [
+        {
+            "title": "Add", 
+            "icon": "fa fa-plus",
+            "click":"addNode"
+        }
+    ],
+    "children": [
+        
+        {
+            "name": "Level1 has children", 
+            "icon": "fa fa-folder", 
+            "openedIcon": "fa fa-folder-open", 
+            "isOpen": true, 
+            "isParent": true, 
+            "children": [
+                {
+                    "name": "level2 - 1", 
+                    "icon": "fa fa-file",
+                    "buttons": [
+                        {
+                            "title": "Add", 
+                            "icon": "fa fa-plus",
+                            "click": "addNode"
+                        },
+                        {
+                            "title": "Edit", 
+                            "icon": "fa fa-edit",
+                            "click": "editNode"
+                        },
+                        {
+                            "title": "Del", 
+                            "icon": "fa fa-trash",
+                            "click": "delNode"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}]

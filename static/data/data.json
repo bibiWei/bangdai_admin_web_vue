@@ -1,0 +1,49 @@
+{
+  "menuList": [
+    {"id":1,"parentId":null,"sort":1,"name":"用户管理","href":"/user","icon":"fa fa-upload","children": [
+      {"id":11,"parentId":1,"sort":0,"name":"用户列表","href":"/user/userList","icon":"fa fa-upload","children": [],"isShow":"1"}
+    ]
+    ,"isShow":"1"},
+    {"id":2,"parentId":null,"sort":2,"name":"求带管理","href":"/buyer","icon":"fa fa-upload","children": [
+      {"id":21,"parentId":2,"sort":0,"name":"求带列表","href":"/buyer/buyerList","icon":"fa fa-upload","children": [],"isShow":"1"}
+    ]
+    ,"isShow":"1"},
+    {"id":3,"parentId":null,"sort":3,"name":"帮带管理","href":"/taker","icon":"fa fa-upload","children": [
+      {"id":31,"parentId":3,"sort":0,"name":"帮带列表","href":"/taker/takerList","icon":"fa fa-upload","children": [],"isShow":"1"}
+    ]
+    ,"isShow":"1"},
+    {"id":4,"parentId":null,"sort":4,"name":"订单管理","href":"/order","icon":"fa fa-upload","children": [
+      {"id":41,"parentId":4,"sort":0,"name":"全部订单","href":"/order/allOrderList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":42,"parentId":4,"sort":0,"name":"未支付订单","href":"/order/noPayOrderList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":43,"parentId":4,"sort":0,"name":"已支付订单","href":"/order/payOrderList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":44,"parentId":4,"sort":0,"name":"已发货订单","href":"/order/sendOrderList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":44,"parentId":4,"sort":0,"name":"已完成订单","href":"/order/sussOrderList","icon":"fa fa-upload","children": [],"isShow":"1"}
+    ]
+    ,"isShow":"1"},
+    {"id":5,"parentId":null,"sort":0,"name":"争议管理/消息中心","href":"/message","icon":"fa fa-upload","children": [
+      {"id":51,"parentId":5,"sort":0,"name":"争议列表","href":"/message/disputeList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":52,"parentId":5,"sort":0,"name":"消息列表","href":"/message/messageList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":53,"parentId":5,"sort":0,"name":"咨询列表","href":"/message/askList","icon":"fa fa-upload","children": [],"isShow":"1"}
+
+    ]
+    ,"isShow":"1"},
+    {"id":6,"parentId":null,"sort":0,"name":"审核管理","href":"/auth","icon":"fa fa-upload","children": [
+      {"id":61,"parentId":6,"sort":0,"name":"身份认证","href":"/auth/authList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":62,"parentId":6,"sort":0,"name":"机票核查","href":"/auth/ticketList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":63,"parentId":6,"sort":0,"name":"提现申请","href":"/auth/withdrawalsList","icon":"fa fa-upload","children": [],"isShow":"1"}
+    ]
+    ,"isShow":"1"},
+    {"id":7,"parentId":null,"sort":0,"name":"评价管理","href":"/evaluate","icon":"fa fa-upload","children": [
+      {"id":71,"parentId":7,"sort":0,"name":"评价列表","href":"/evaluate/evaluateList","icon":"fa fa-upload","children": [],"isShow":"1"}
+    ]
+    ,"isShow":"1"},
+    {"id":8,"parentId":null,"sort":0,"name":"广告管理","href":"/ad","icon":"fa fa-upload","children": [
+      {"id":81,"parentId":8,"sort":0,"name":"广告列表","href":"/ad/adList","icon":"fa fa-upload","children": [],"isShow":"1"}
+    ]
+    ,"isShow":"1"},
+    {"id":9,"parentId":null,"sort":0,"name":"汇率管理","href":"/exchangeList","icon":"fa fa-upload","children": [
+      {"id":91,"parentId":9,"sort":0,"name":"汇率列表","href":"/exchangeList/exchangeList","icon":"fa fa-upload","children": [],"isShow":"1"}
+    ]
+    ,"isShow":"1"}
+  ]
+}

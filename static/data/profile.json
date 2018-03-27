@@ -1,0 +1,35 @@
+{"status":"S","message":"操作成功",
+  "result":{"menulist":[
+    {"orderNumber":1,"icon":"fa fa-reorder","label":"系统管理","title":"系统管理","parentId":"-1",
+      "children":[
+        {"orderNumber":1,"icon":"fa fa-user","label":"用户管理","title":"用户管理",
+          "parentId":"4","children":[],"name":"用户管理","menuType":"00","id":"5",
+          "href":"/sys/userList","isResource":"N","value":"5","remarks":"用户管理","status":"00"},
+        {"orderNumber":2,"icon":"fa fa-user-circle-o","label":"角色管理","title":"角色管理",
+          "parentId":"4","children":[],"name":"角色管理","menuType":"00","id":"6",
+          "href":"/sys/roleList","isResource":"N","value":"6","remarks":"角色管理","status":"00"},
+        {"orderNumber":3,"icon":"fa fa-tasks","label":"菜单管理","title":"菜单管理",
+          "parentId":"4","children":[],"name":"菜单管理","menuType":"00","id":"7",
+          "href":"/sys/menuList","isResource":"N","value":"7","remarks":"菜单管理","status":"00"},
+        {"orderNumber":4,"icon":"fa fa-qrcode","label":"资源管理","title":"资源管理",
+          "parentId":"4","children":[],"name":"资源管理","menuType":"00","id":"10",
+          "href":"/sys/resourceList","isResource":"N","value":"10","remarks":"资源管理","status":"00"},
+        {"orderNumber":5,"icon":"fa fa-wrench","label":"系统参数管理","title":"系统参数管理",
+          "parentId":"4","children":[],"name":"系统参数管理","menuType":"00","id":"61",
+          "href":"/sys/params","isResource":"N","value":"61","remarks":"","status":"00"}
+      ],"name":"系统管理","menuType":"00","id":"4","href":"/sys","isResource":"N","value":"4","remarks":"系统管理","status":"00"},
+    {"orderNumber":7,"icon":"fa fa-user-secret","label":"系统监控","title":"系统监控","parentId":"-1",
+        "children":[
+            {"orderNumber":1,"icon":"fa fa-search","label":"物流请求日志","title":"物流请求日志",
+              "parentId":"38","children":[],"name":"物流请求日志","menuType":"00","id":"39",
+              "href":"/ops/logisticsLog","isResource":"N","value":"39","remarks":"","status":"00"},
+            {"orderNumber":2,"icon":"fa fa-terminal","label":"操作日志","title":"操作日志",
+              "parentId":"38","children":[],"name":"操作日志","menuType":"00","id":"66",
+              "href":"/ops/operationlog","isResource":"N","value":"66","remarks":"","status":"00"},
+            {"orderNumber":3,"icon":"fa fa-reply-all","label":"消息日志","title":"消息日志",
+              "parentId":"38","children":[],"name":"消息日志","menuType":"00","id":"67",
+              "href":"/ops/messageLog","isResource":"N","value":"67","remarks":"","status":"00"}
+        ],"name":"系统监控","menuType":"00","id":"38","href":"/ops","isResource":"N","value":"38","remarks":"","status":"00"}
+  
+  ],
+"user":{"sex":"M","name":"SWAGGER管理员","userType":"SYS","userName":"swagger[UT]","userId":0}}}
