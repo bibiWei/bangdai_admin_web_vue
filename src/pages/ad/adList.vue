@@ -17,29 +17,86 @@
         </FormItem>
         </Col>
         <Col span="7">
-        <FormItem label="创建时间">
-          <DatePicker type="date" multiple placeholder="请选择创建时间" style="width: 100%" ></DatePicker>
-        </FormItem>
+          <FormItem label="创建时间">
+            <DatePicker type="date" multiple placeholder="请选择创建时间" style="width: 100%" ></DatePicker>
+          </FormItem>
         </Col>
         <Col span="7">
-        <FormItem label="有效期">
-          <DatePicker type="date" multiple placeholder="请选择有效期" style="width: 100%" ></DatePicker>
-        </FormItem>
+          <FormItem label="有效期">
+            <DatePicker type="date" multiple placeholder="请选择有效期" style="width: 100%" ></DatePicker>
+          </FormItem>
         </Col>
         <Col span="3" style="float: right">
-        <Button type="ghost" style="float:right;margin-left: 10px;" @click="doSearchReset">重置</Button>
-        <Button type="primary" style="float:right;margin-left: 10px;" @click="search()">查询</Button>
+          <Button type="ghost" style="float:right;margin-left: 10px;" @click="doSearchReset">重置</Button>
+          <Button type="primary" style="float:right;margin-left: 10px;" @click="search()">查询</Button>
         </Col>
       </Row>
     </Form>
     <Table border :columns="tagList" :data="ListData"></Table>
     <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
+    <Modal title="广告详情" v-model="isAdInfo" width="900px">
+      <Form >
+        <Row :gutter="16">
+          <Col span="6">
+            <FormItem label="广告名称" prop="pname">
+              <Input type="text"  placeholder="请输入广告名称" ></Input>
+            </FormItem>
+          </Col>
+          <Col span="6">
+            <FormItem label="广告描述" prop="title">
+              <Input type="text"  placeholder="请输入广告描述" ></Input>
+            </FormItem>
+          </Col>
+          <Col span="6">
+            <FormItem label="排序" prop="title">
+              <Input type="text"  placeholder="请输入广告排序" ></Input>
+            </FormItem>
+          </Col>
+          <Col span="6">
+            <FormItem label="有效期" prop="validTime">
+              <DatePicker type="date"  placeholder="请输入有效期" width="100%" format="yyyy/MM/dd"></DatePicker>
+            </FormItem>
+          </Col>
+          <Col span="8">
+          <Col span="11">
+          <FormItem label="上传图片">
+            <Upload action="www.baidu.com" ref="adUpload"
+                    v-show="uploadList.length==0" :show-upload-list="false"
+                    :on-success="handleSuccess" :format="['jpg','jpeg','png']">
+              <Button type="ghost" icon="ios-cloud-upload-outline">上传图片</Button>
+            </Upload>
+            <div class="demo-upload-list" v-for="item in uploadList">
+              <template v-if="item.status === 'finished'">
+                <img :src="item.url">
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
+            </div>
+          </FormItem>
+          </Col>
+          </Col>
+        </Row>
+        <Row :gutter="10">
+          <Col span="22">
+          <FormItem label="备注" prop="brandDesc">
+            <Input type="textarea"  :rows="5" placeholder="请输入品牌描述信息"></Input>
+          </FormItem>
+          </Col>
+        </Row>
+      </Form>
+    </Modal>
   </div>
 </template>
 <script>
   import swal from 'sweetalert2'
+  import Modal from "../../../node_modules/iview/src/components/modal/modal.vue";
   export default {
-    components: {},
+    components: {Modal},
     data () {
       return {
         scoreSearch:{
@@ -51,6 +108,8 @@
         tagInfo:false,
         delTagRecord:null,
         delTag:false,
+        uploadList:[],
+        isAdInfo:[],
         tagList: [
           { type: 'index', width: 60,  align: 'center' },
           { title: '广告',key: 'col_1',align: 'center'},
@@ -96,6 +155,7 @@
       },
     },
     created(){
+      this.uploadList = this.$refs.adUpload.fileList;
       this.doSearchReset()
       this.search()
     }

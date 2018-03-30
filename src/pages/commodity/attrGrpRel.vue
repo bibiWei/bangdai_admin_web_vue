@@ -71,9 +71,7 @@
                         <Button type="ghost" size="small" @click="reloadMockData">刷新</Button>
                     </div>
                 </Transfer>
-
               </Col>
-
             </Row>
             <br/>
             <Row>

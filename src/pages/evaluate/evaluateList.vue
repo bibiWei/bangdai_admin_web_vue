@@ -58,17 +58,35 @@
           { title: '帮带人', key: 'col_3', align: 'center'},
           { title: '求带人', key: 'col_4', align: 'center'},
           { title: '评价时间', key: 'col_5', align: 'center'},
-          { title: '评价', key: 'col_6', align: 'center'},
+          { title: '评价', key: 'col_6', align: 'center',width:200,
+            render: (h, params) => {
+              return h('div', [
+                h('Rate',
+                  {
+                    props: {
+                      disabled:true,
+                      allowHalf:true,
+                      showText:true,
+                      value:3.8
+                    },
+                    style: {
+                      disabled:true
+                    },
+                  }, '3.2')
+              ]);
+            }
+          },
           { title: '状态', key: 'col_7', align: 'center'},
           { title: '操作', key: 'action', width: 130, align: 'center',
             render: (h, params) => {
               return h('div', [
                 h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.show(params.row) } } }, '发布'),
+                  on: { click: () => { this.doPush(params.row) } } }, '发布'),
                 h('Button', { props: { type: 'error', size: 'small' },
                   on: { click: () => { this.del(params.row) } } }, '删除')
               ]);
-            }}
+            }
+          }
         ],
         ListData: [
           {
@@ -78,7 +96,7 @@
             col_4:"小王",
             col_5:"2018-12-12",
             col_6:"40KG",
-            col_7:"13.2/RMB",
+            col_7:"已发布",
           }
         ],
         ruleValidate: {
@@ -95,6 +113,9 @@
 
       search(startIndex , endIndex){
       },
+      doPush(row){
+        swal({text: '发布成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+      }
     },
     created(){
       this.doSearchReset()

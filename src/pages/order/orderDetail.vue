@@ -3,53 +3,65 @@
     <Breadcrumb>
       <BreadcrumbItem>首页</BreadcrumbItem>
       <BreadcrumbItem>订单管理</BreadcrumbItem>
-      <BreadcrumbItem>全部订单</BreadcrumbItem>
+      <BreadcrumbItem>订单详情</BreadcrumbItem>
     </Breadcrumb>
-    <Form :label-width="105" style="margin-top: 20px">
-      <Row>
-        <Col span="7">
-          <FormItem label="起始地">
-            <Select  filterable  >
-              <Option :value="0" :key="0">请选择</Option>
-              <Option :value="1" :key="1">青岛</Option>
-              <Option :value="2" :key="2">大连</Option>
-            </Select>
-          </FormItem>
+    <Card style="margin-top: 30px">
+      <h4 slot="title">
+        <Icon type="android-archive"></Icon>
+        订单详情
+      </h4>
+
+      <Row :gutter="16" class="font-bold">
+        <Col span="24">
+          <Col span="2" style="text-align: right">
+            <span >订单编号:</span>
+          </Col>
+          <Col span="4">
+          <span>0000019233232</span>
+          </Col>
         </Col>
-        <Col span="7">
-        <FormItem label="目的地">
-          <Select  filterable  >
-            <Option :value="0" :key="0">请选择</Option>
-            <Option :value="1" :key="1">纽约</Option>
-            <Option :value="2" :key="2">日本</Option>
-          </Select>
-        </FormItem>
+        <Col span="24" style="margin-top: 10px">
+          <Col span="2" style="text-align: right">
+            <span >订单状态:</span>
+          </Col>
+          <Col span="4">
+            <span>等待付款</span>
+          </Col>
         </Col>
-        <Col span="7">
-          <FormItem label="订单编号">
-            <Input placeholder="请输入订单编号"></Input>
-          </FormItem>
-        </Col>
-        <Col span="3" style="float: right">
-          <Button type="ghost" style="float:right;margin-left: 10px;" @click="doSearchReset">重置</Button>
-          <Button type="primary" style="float:right;margin-left: 10px;" @click="search()">查询</Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col span="7">
-          <FormItem label="帮带人">
-            <Input placeholder="请输入帮带人"></Input>
-          </FormItem>
-        </Col>
-        <Col span="7">
-          <FormItem label="求带人">
-            <Input placeholder="请输入求带人"></Input>
-          </FormItem>
+        <Col span="24" style="margin-top: 10px">
+          <Col span="2" style="text-align: right">
+            <span >订单金额:</span>
+          </Col>
+          <Col span="4">
+            <span class="price-font">222.3/RMB</span>
+          </Col>
         </Col>
       </Row>
-    </Form>
-    <Table border :columns="tagList" :data="ListData"></Table>
-    <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
+
+      <div style="margin-left: 100px;margin-right: 100px;margin-top: 50px">
+        <Steps :current="1" >
+          <Step title="已下单" content="xxxxxx"></Step>
+          <Step title="已支付" content="xxxxxx"></Step>
+          <Step title="已发货" content="xxxxxx"></Step>
+          <Step title="已完成" content="xxxxxx"></Step>
+        </Steps>
+      </div>
+      <Card :bordered="false" class="top-20">
+        <p slot="title">物流详情</p>
+        <Tabs value="name1" >
+          <TabPane label="求带人" name="name1">
+            <Card :bordered="false" class="top-20">
+              <p slot="title">联系信息</p>
+            </Card>
+          </TabPane>
+          <TabPane label="帮带人" name="name2">
+
+          </TabPane>
+        </Tabs>
+      </Card>
+
+
+    </Card>
   </div>
 </template>
 <script>
@@ -113,11 +125,9 @@
         this.scoreSearch['stationName'] = '';
       },
 
-      show(row){
-        this.$router.push({path:"/order/orderDetail"})
-      },
       search(startIndex , endIndex){
       },
+
     },
     created(){
       this.doSearchReset()
@@ -125,3 +135,15 @@
     }
   }
 </script>
+
+<style>
+  .font-bold{
+    font-weight: bold;
+  }
+  .price-font{
+    color: red;
+  }
+  .top-20{
+    margin-top: 20px;
+  }
+</style>

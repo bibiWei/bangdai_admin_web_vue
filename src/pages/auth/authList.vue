@@ -30,6 +30,144 @@
     </Form>
     <Table border :columns="tagList" :data="ListData"></Table>
     <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
+    <Modal title="查看" v-model="isAuthInfo" width="900px">
+      <Tabs value="name1">
+        <TabPane :label="idAuth" name="name1">
+          <Form>
+            <Row :gutter="16">
+              <Col span="6">
+                <FormItem label="身份证号码" >
+                  <Input type="text"  placeholder="210502199204290653"  disabled></Input>
+                </FormItem>
+              </Col>
+              <Col span="6">
+                <FormItem label="姓名" >
+                  <Input type="text"  placeholder="xxx"  disabled></Input>
+                </FormItem>
+              </Col>
+              <Col span="6">
+                <FormItem label="性别" >
+                  <Input type="text"  placeholder="男"  disabled></Input>
+                </FormItem>
+              </Col>
+              <Col span="6">
+                <FormItem label="年龄" >
+                  <Input type="text"  placeholder="32"  disabled></Input>
+                </FormItem>
+              </Col>
+            </Row>
+          </Form>
+          <Row :gutter="16">
+            <Col span="12">
+              <Card>
+                <div style="text-align:center">
+                  <img src="../../../static/img/pic.jpeg" width="280px">
+                  <h3>身份证正面</h3>
+                </div>
+              </Card>
+            </Col>
+            <Col span="12">
+              <Card>
+                <div style="text-align:center">
+                  <img src="../../../static/img/pic.jpeg" width="280px">
+                  <h3>身份证反面</h3>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+          <Row :gutter="100" style="margin-top: 3em;text-align: center">
+            <Col span="12">
+              <Button type="success" long style="width: 80%" @click="doAgree()">通过</Button>
+            </Col>
+            <Col span="12">
+              <Button type="error" long style="width: 80%" @click="doRefuse()">驳回</Button>
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane :label="pshAuth" name="name2">
+          <Form>
+            <Row :gutter="16">
+              <Col span="6">
+              <FormItem label="护照号码" >
+                <Input type="text"  placeholder="210502199204290653"  disabled></Input>
+              </FormItem>
+              </Col>
+              <Col span="6">
+              <FormItem label="姓名" >
+                <Input type="text"  placeholder="xxx"  disabled></Input>
+              </FormItem>
+              </Col>
+              <Col span="6">
+              <FormItem label="性别" >
+                <Input type="text"  placeholder="男"  disabled></Input>
+              </FormItem>
+              </Col>
+              <Col span="6">
+              <FormItem label="年龄" >
+                <Input type="text"  placeholder="32"  disabled></Input>
+              </FormItem>
+              </Col>
+            </Row>
+            <Row :gutter="16">
+              <Col span="12">
+              <Card>
+                <div style="text-align:center">
+                  <img src="../../../static/img/pic.jpeg" width="280px">
+                  <h3>护照首页</h3>
+                </div>
+              </Card>
+              </Col>
+              <Col span="12">
+              <Card>
+                <div style="text-align:center">
+                  <img src="../../../static/img/pic.jpeg" width="280px">
+                  <h3>护照尾页</h3>
+                </div>
+              </Card>
+              </Col>
+            </Row>
+            <Row :gutter="100" style="margin-top: 3em;text-align: center">
+              <Col span="12">
+                <Button type="success" long style="width: 80%">通过</Button>
+              </Col>
+              <Col span="12">
+                <Button type="error" long style="width: 80%">驳回</Button>
+              </Col>
+            </Row>
+          </Form>
+        </TabPane>
+        <TabPane :label="foreAuth" name="name3">
+          <Row :gutter="16">
+            <Col span="12">
+            <Card>
+              <div style="text-align:center">
+                <img src="../../../static/img/pic.jpeg" width="280px">
+                <h3>外卡正面</h3>
+              </div>
+            </Card>
+            </Col>
+            <Col span="12">
+            <Card>
+              <div style="text-align:center">
+                <img src="../../../static/img/pic.jpeg" width="280px">
+                <h3>外卡背面</h3>
+              </div>
+            </Card>
+            </Col>
+          </Row>
+          <Row :gutter="100" style="margin-top: 3em;text-align: center">
+            <Col span="12">
+              <Button type="success" long style="width: 80%">通过</Button>
+            </Col>
+            <Col span="12">
+              <Button type="error" long style="width: 80%">驳回</Button>
+            </Col>
+          </Row>
+        </TabPane>
+      </Tabs>
+      <div slot="footer">
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
@@ -46,6 +184,39 @@
         pageSize:10,
         tagInfo:false,
         delTagRecord:null,
+        isAuthInfo:false,
+
+        idAuth: (h) => {
+          return h('div', [
+            h('span', '身份证认证'),
+            h('Badge', {
+              props: {
+                count: '未认证',
+              }
+            })
+          ])
+        },
+        pshAuth: (h) => {
+          return h('div', [
+            h('span', '护照认证'),
+            h('Badge', {
+              props: {
+                count: '未认证'
+              }
+            })
+          ])
+        },
+        foreAuth: (h) => {
+          return h('div', [
+            h('span', '外籍认证'),
+            h('Badge', {
+              props: {
+                count: '未认证',
+              }
+            })
+          ])
+        },
+
         delTag:false,
         tagList: [
           { type: 'index', width: 60,  align: 'center' },
@@ -56,6 +227,8 @@
           { title: '操作', key: 'action', width: 130, align: 'center',
             render: (h, params) => {
               return h('div', [
+                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
+                  on: { click: () => { this.showAuth(params.row) } } }, '查看'),
                 h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
                   on: { click: () => { this.show(params.row) } } }, '审核'),
               ]);
@@ -83,6 +256,31 @@
 
       search(startIndex , endIndex){
       },
+      showAuth(){
+        this.isAuthInfo = true;
+      },
+      doRefuse(){
+        this.$Modal.confirm({
+          render: (h) => {
+            return h('Input', {
+              props: {
+                type:'textarea',
+                value: this.value,
+                autofocus: true,
+                placeholder: '请输入驳回理由'
+              },
+              on: {
+                input: (val) => {
+                  this.value = val;
+                }
+              }
+            })
+          }
+        })
+      },
+      doAgree(){
+          swal({text: '审核成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+      }
     },
     created(){
       this.doSearchReset()

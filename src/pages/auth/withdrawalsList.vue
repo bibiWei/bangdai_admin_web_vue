@@ -59,7 +59,9 @@
             render: (h, params) => {
               return h('div', [
                 h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.show(params.row) } } }, '审核'),
+                  on: { click: () => { this.doAgree(params.row) } } }, '通过'),
+                h('Button', { props: {  type: 'error', size: 'small' }, style: { marginRight: '5px' },
+                  on: { click: () => { this.doRefuse(params.row) } } }, '驳回'),
               ]);
             }}
         ],
@@ -87,6 +89,28 @@
 
       search(startIndex , endIndex){
       },
+      doRefuse(){
+        this.$Modal.confirm({
+          render: (h) => {
+            return h('Input', {
+              props: {
+                type:'textarea',
+                value: this.value,
+                autofocus: true,
+                placeholder: '请输入驳回理由'
+              },
+              on: {
+                input: (val) => {
+                  this.value = val;
+                }
+              }
+            })
+          }
+        })
+      },
+      doAgree(){
+        swal({text: '审核成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+      }
     },
     created(){
       this.doSearchReset()

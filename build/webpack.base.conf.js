@@ -66,6 +66,14 @@ module.exports = {
         }
       },
       {
+        test: /\.css$/,
+        loader: 'vue-style-loader!css-loader'
+      },
+      {
+        test: /\.less$/,
+        loader: 'vue-style-loader!css-loader!less-loader'
+      },
+      {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
         query: {

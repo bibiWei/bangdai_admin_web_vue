@@ -38,6 +38,52 @@
     </Form>
     <Table border :columns="tagList" :data="ListData"></Table>
     <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
+    <Modal title="机票审核" v-model="isTicketInfo" width="900px">
+      <Form>
+        <Row :gutter="16">
+          <Col span="6">
+          <FormItem label="出发地" >
+            <Input type="text"  placeholder="大连"  disabled></Input>
+          </FormItem>
+          </Col>
+          <Col span="6">
+          <FormItem label="目的地" >
+            <Input type="text"  placeholder="棉花堡"  disabled></Input>
+          </FormItem>
+          </Col>
+          <Col span="6">
+          <FormItem label="出发时间" >
+            <Input type="text"  placeholder="2018-12-12"  disabled></Input>
+          </FormItem>
+          </Col>
+          <Col span="6">
+          <FormItem label="帮带人" >
+            <Input type="text"  placeholder="xxxx"  disabled></Input>
+          </FormItem>
+          </Col>
+        </Row>
+      </Form>
+      <Row :gutter="16">
+        <Col span="24">
+        <Card>
+          <div style="text-align:center">
+            <img src="../../../static/img/pic.jpeg" width="280px">
+            <h3>机票照片</h3>
+          </div>
+        </Card>
+        </Col>
+      </Row>
+      <Row :gutter="100" style="margin-top: 3em;text-align: center">
+        <Col span="12">
+        <Button type="success" long style="width: 80%" @click="doAgree()">通过</Button>
+        </Col>
+        <Col span="12">
+        <Button type="error" long style="width: 80%" @click="doRefuse()">驳回</Button>
+        </Col>
+      </Row>
+      <div slot="footer">
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
@@ -55,6 +101,7 @@
         tagInfo:false,
         delTagRecord:null,
         delTag:false,
+        isTicketInfo:false,
         tagList: [
           { type: 'index', width: 60,  align: 'center' },
           { title: '起始地',key: 'col_1',align: 'center'},
@@ -67,7 +114,7 @@
             render: (h, params) => {
               return h('div', [
                 h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.show(params.row) } } }, '审核')
+                  on: { click: () => { this.showTicket(params.row) } } }, '审核')
               ]);
             }}
         ],
@@ -95,6 +142,31 @@
 
       search(startIndex , endIndex){
       },
+      showTicket(){
+        this.isTicketInfo = true;
+      },
+      doRefuse(){
+        this.$Modal.confirm({
+          render: (h) => {
+            return h('Input', {
+              props: {
+                type:'textarea',
+                value: this.value,
+                autofocus: true,
+                placeholder: '请输入驳回理由'
+              },
+              on: {
+                input: (val) => {
+                  this.value = val;
+                }
+              }
+            })
+          }
+        })
+      },
+      doAgree(){
+        swal({text: '审核成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+      }
     },
     created(){
       this.doSearchReset()

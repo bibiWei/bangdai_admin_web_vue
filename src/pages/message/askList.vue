@@ -25,103 +25,42 @@
     </Form>
     <Table border :columns="tagList" :data="ListData"></Table>
     <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
-
-    <Modal v-model="showChatInfo" width="460">
-      <template>
-        <div>
-          <th-doctortitlebar
-            canopen
-            :openConfig="openconfig"
-            :name="doctorbar.name"
-            :position="doctorbar.position"
-            :star="doctorbar.star"
-            :btn="doctorbar.btn"
-            :btnType="doctorbar.btntype"
-            :btnCanClick="doctorbar.btncanlick"
-            :headImg="otherface"
-            @btnCall="topbtncall"
-            @headClick="headclick">
-            自定义内容
-            <div v-for="i in count">{{i}}</div>
-          </th-doctortitlebar>
-          <th-message
-            ref="messgebox"
-            :usePulldown="true"
-            :pulldownConfig="pulldownconfig"
-            :topPadding="120"
-            :messageData="messageData"
-            :funcList="funclist"
-            :bigBtn="bigbtn"
-            :showInput="showinput"
-            :selfFace="selfface"
-            :otherFace="otherface"
-            @sendOut="senRequest"
-            @galleryCall="gallery"
-            @cameraCall="camera"
-            @quickCall="quick"
-            @bigBtnCall="btncall"
-            @faceClick="faceclick"
-            @msgClick="msgclick"
-            @pulldownCall="pulldowncall">
-          </th-message>
-          <th-dialog
-            :isShow.sync="showdialog"
-            :showFrom="dialogfrom"
-            :closeOnClickshadow="true"
-            @onHide="hidedialog">
-          </th-dialog>
+    <Modal title="聊天窗口" v-model="isChatShow" width="900px">
+      <div id="chatApp">
+        <div class="sidebar">
+          <card></card>
         </div>
-      </template>
+        <div class="main">
+          <message></message>
+          <text></text>
+        </div>
+      </div>
     </Modal>
   </div>
 </template>
 <script>
   import swal from 'sweetalert2'
   import thor from 'thor-x'
-  import { messageData, facelist } from "../../../static/data/testdata";
+  import { actions } from '../../store/store';
+  import Card from '../../components/chat/card.vue';
+  import List from '../../components/chat/list.vue';
+  import Text from '../../components/chat/text.vue';
+  import Message from '../../components/chat/message.vue';
   Vue.use(thor)
   export default {
-    components: {},
+    components: {
+      Card, List, Text, Message
+    },
+    vuex: {
+      actions: actions
+    },
     data () {
       return {
-        messageData: messageData,
-        bigbtn: "",
-        showinput: true,
-        funclist: ["gallery", "camera", "quick"],
-        doctorbar: {
-          name: "李成才",
-          position: "主治医师",
-          star: 5,
-          btn: "结束咨询",
-          btncanlick: true,
-          btntype: "primary"
-        },
         count: 10,
-        showdialog: false,
-        dialogfrom: "bottom",
-        selfface: selfface,
-        otherface: otherface,
-        facelist: facelist,
-        openconfig: {
-          open: "打开",
-          close: "关闭"
-        },
-        pulldownconfig: {
-          default: "<div>下拉刷新</div>",
-          up: "<div style='color:red'>下拉刷新</div>",
-          down: "<div style='color:blue'>松手刷新</div>",
-          loading: "<span style='color:green'>加载中</span>"
-        },
-        scoreSearch:{
-          stationName:'',
-          name:''
-        },
         showChatInfo:true,
         total:0,
         pageSize:10,
-        tagInfo:false,
-        delTagRecord:null,
-        delTag:false,
+        isChatShow:false,
         tagList: [
           { type: 'index', width: 60,  align: 'center' },
           { title: '标题',key: 'col_1',align: 'center'},
@@ -133,7 +72,7 @@
             render: (h, params) => {
               return h('div', [
                 h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.show(params.row) } } }, '聊天'),
+                  on: { click: () => { this.showChat(params.row) } } }, '聊天'),
                 h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
                   on: { click: () => { this.show(params.row) } } }, '结束咨询'),
               ]);
@@ -159,76 +98,11 @@
         this.scoreSearch['name'] = '';
         this.scoreSearch['stationName'] = '';
       },
-
+      showChat(){
+        this.isChatShow = true;
+      },
       search(startIndex , endIndex){
       },
-
-      replaceImg(word) {
-        return word.replace(/\[[\u4E00-\u9FA5]{1,3}\]/gi, word => {
-          let newWord = word.replace(/\[|\]/gi, "");
-          let index = this.facelist.indexOf(newWord);
-          return `<img src="https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/${index}.gif" align="middle">`;
-        });
-      },
-      senRequest(h) {
-        this.messageData.push({
-          type: 1,
-          text: this.replaceImg(h)
-        });
-        console.log(h);
-      },
-      gallery() {
-        console.warn("调起了自定义组件");
-        this.messageData.push({
-          type: 3,
-          text: "调起了自定义相册组件"
-        });
-      },
-      camera() {
-        this.messageData.push({
-          type: 3,
-          text: "调起了自定义拍照组件"
-        });
-      },
-      btncall() {
-        alert("前往评价了");
-        this.doctorbar.btn = "已评价";
-        this.doctorbar.btntype = "default";
-      },
-      topbtncall() {
-        this.messageData.push({
-          type: 4,
-          text: "您已完成咨询，请前往评价"
-        });
-        this.bigbtn = "前往评价";
-        this.showinput = false;
-        this.doctorbar.btncanlick = false;
-      },
-      quick() {
-        this.showdialog = true;
-      },
-      hidedialog() {
-        this.showdialog = false;
-      },
-      faceclick(d) {
-        console.log(d);
-      },
-      msgclick(d) {
-        if (d.isimg) alert(d.text);
-      },
-      headclick() {
-        console.log("点击了头像");
-      },
-      pulldowncall() {
-        console.log("pulldown");
-        this.messageData.unshift({
-          type: 1,
-          text: "新增"
-        });
-        setTimeout(() => {
-          this.$refs.messgebox.resetpulldown();
-        }, 2000);
-      }
     },
     created(){
       this.doSearchReset()
@@ -236,3 +110,37 @@
     }
   }
 </script>
+
+<style lang="less" scoped>
+  #chatApp {
+    margin: 20px auto;
+    width: 800px;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 3px;
+
+    .sidebar, .main {
+      height: 100%;
+    }
+    .sidebar {
+      float: left;
+      width: 200px;
+      color: #f4f4f4;
+      background-color: #2e3238;
+    }
+    .main {
+      position: relative;
+      overflow: hidden;
+      background-color: #eee;
+    }
+    .text {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+    }
+    .message {
+      height: ~'calc(100% - 160px)';
+    }
+  }
+</style>
