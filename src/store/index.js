@@ -38,7 +38,7 @@ const store = new Vuex.Store({
     device: {
       isMobile: false
     },
-    userInfo:{userName:''}
+    userInfo:{nickName:''}
   },
   mutations: {
     //只能同步的函数
@@ -57,7 +57,7 @@ const store = new Vuex.Store({
     [types.LOGOUT] (state) {
         state.userInfo={name:''};
         state.menuList = [];
-        localStorage.removeItem("token");
+        localStorage.removeItem("platform_token");
     },
     [types.TOGGLE_SIDEBAR] (state, collapsed) {
       if (collapsed == null) collapsed = !state.sidebar.collapsed;

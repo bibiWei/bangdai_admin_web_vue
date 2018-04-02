@@ -25,7 +25,7 @@ const routes = [
   {
       path: '', component: app, children: [
       {path: '/resetPwd', component: resetPwd},
-      {path: '/index', component: dashboard},
+      {path: '≈', component: dashboard},
       {path: '/sys/scrore', component: scoreList},
       {path: '/user/userList', component: userList},
       {path: '/buyer/buyerList', component: buyerList},

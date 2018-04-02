@@ -118,7 +118,11 @@ const doBrandSave  = commodityBrand.doBrandSave;
 const brandUploadURL  = commodityBrand.brandUploadURL;
 const getBrandlistWithGroup = commodityBrand.getBrandlistWithGroup;
 
+const SUCCESS = 1;
+
+
 const apiList = {
+  SUCCESS,
   login,getBizProfile,
   doUserSave,doUserList,doUserDel,doUserInfo,doUserRoles,doBindRoles,doUserRoleInfo,doResetPwd,doResetPwdLogin,
   doRoleList, doRoleInfo, doRoleDel,doRoleSave,doRoleMenu,getBizRoleList,
@@ -132,7 +136,7 @@ const apiList = {
   getAddressList,doAddressInfo,doAddressDel,doAddressSave,
   getTagList,doTagInfo,doTagDel,doTagSave,
   doBrandInfo,doBrandDel,doBrandSave,brandUploadURL,getBrandlistWithGroup,
-  doProductList,getBrandList,getProductById,getProductTypeByCateId,getProductClass,getAttrList,doCateList
+  doProductList,getBrandList,getProductById,getProductTypeByCateId,getProductClass,getAttrList,doCateList,
 }
 
 

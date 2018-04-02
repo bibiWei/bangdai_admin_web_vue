@@ -7,6 +7,7 @@ var isUT = process.env.NODE_ENV === 'ut'
 // export const SERVER_BASE_URL = isProduction ? 'http://gank.io' : 'www.baidu.com'
 
 const SERVER_BASE_URL = (isProduction ? config.build.baseServerUrl : (isUT ? config.ut.baseServerUrl : config.dev.baseServerUrl))
+//const SERVER_BASE_URL = "http://localhost:8082";
 const securityModuleName = isUT ? "" : "/api/security";
 const commodityModuleName = isUT ? "" : "/api/commodity";
 const SECURITY_V1 = SERVER_BASE_URL+securityModuleName+"/v1";
@@ -22,7 +23,7 @@ if(isUT){
     PROFILE = 'http://localhost:'+config.ut.port+'/static/data/profile.json';
     BIZ_PROFILE = 'http://localhost:'+config.ut.port+'/static/data/profile/biz.json';
 }else{
-    LOGIN = SERVER_BASE_URL + '/v1/auth/login';
+    LOGIN = SERVER_BASE_URL + '/login';
     LOGOUT = SERVER_BASE_URL + '/v1/auth/logout';
     CHANGE_PWD = SERVER_BASE_URL+securityModuleName+'/changePwd';
     PROFILE = SERVER_BASE_URL + '/v1/auth/profile';

@@ -4,15 +4,15 @@
       <div class="login">
         <div class="login-form">
           <div class="card-block">
-            <h2>微服务管理平台</h2>
+            <h2>xxx管理平台</h2>
               <BR/><BR/>
             <div class="input-group m-b-1">
               <span class="input-group-addon"><i class="fa fa-user"></i></span>
-              <input type="text" class="form-control" placeholder="username" v-model="form.userName">
+              <input type="text" class="form-control" placeholder="用户名" v-model="form.userCode">
             </div>
             <div class="input-group m-b-2">
               <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-              <input type="password" class="form-control" placeholder="Password" v-model="form.password"
+              <input type="password" class="form-control" placeholder="密码" v-model="form.password"
                      @keyup.enter="login">
             </div>
             <div class="row">
@@ -47,8 +47,8 @@
     data() {
       return {
         form: {
-          userName: 'A491382',
-          password: '123456'
+          userCode: 'admin',
+          password: 'admin'
         }
       }
     },
@@ -62,8 +62,9 @@
       }),
       login(){
         this.$api.login(this.form).then(res => {
-          if(res.status == "S"){
-              this.setUserInfo(res.result);
+          if(res.status == this.$api.SUCCESS){
+              this.setUserInfo(res.result.userVo);
+              localStorage.setItem('platform_token',res.result.token);
               this.$router.push('/')
           }else{
             swal({text: '登录失败['+res.message+']',type: 'error',showCancelButton: false,width:300});

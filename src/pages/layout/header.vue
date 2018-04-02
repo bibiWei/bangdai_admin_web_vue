@@ -48,7 +48,7 @@
               <li class="user-header">
                 <img src="../../../static/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 <p>
-                  {{userInfo.userName}}{{userInfo.name==null?"":(" - "+userInfo.name)}}
+                  {{userInfo.nickName}}{{userInfo.name==null?"":(" - "+userInfo.name)}}
                 </p>
               </li>
               <!-- Menu Body -->

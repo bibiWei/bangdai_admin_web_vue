@@ -10,7 +10,7 @@ module.exports = {
     assetsPublicPath: '',
     // assetsPublicPath: '/Vue-Admin/',
     productionSourceMap: false,
-    baseServerUrl: 'http://101.132.139.50:8765/gateway',
+    baseServerUrl: 'http://localhost:8082',
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
@@ -30,7 +30,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
-    baseServerUrl: 'http://localhost:8765/gateway',
+    baseServerUrl: 'http://localhost:8082',
     //baseServerUrl: 'http://localhost:8765/gateway',
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
@@ -46,7 +46,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
-    baseServerUrl: 'http://localhost:8765/gateway/api/security',
+    baseServerUrl: 'http://localhost:8082',
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

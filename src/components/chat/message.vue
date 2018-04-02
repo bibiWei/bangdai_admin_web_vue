@@ -2,12 +2,14 @@
 
   import { actions } from '../../store/store';
   export default {
+
     vuex: {
         getters: {
             user: ({ user }) => user,
             session: ({ sessions, currentSessionId }) => sessions.find(session => session.id === currentSessionId)
         }
     },
+
     filters: {
         // 将日期过滤为 hour:minutes
         time (date) {
@@ -17,6 +19,7 @@
             return date.getHours() + ':' + date.getMinutes();
         }
     },
+
     directives: {
         // 发送消息后滚动到底部
         'scroll-bottom' () {
@@ -25,6 +28,7 @@
             });
         }
     }
+
 };
 </script>
 <template>

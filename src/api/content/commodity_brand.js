@@ -6,7 +6,8 @@ export const brandUploadURL = apiConfig.BRAND_UPLOAD
 export const getBrandList = params => {
   let startIndex = params["startIndex"], endIndex = params["endIndex"],tagName=params["tagName"];
   return fetch({
-      url: apiConfig.BRAND_LIST + "?startIndex=" + startIndex + "&endIndex=" + endIndex+ "&tagName=" + tagName,
+      url: apiConfig.BRAND_LIST + "?st" +
+      "artIndex=" + startIndex + "&endIndex=" + endIndex+ "&tagName=" + tagName,
       method: 'post',
   })
 }
