@@ -1,22 +1,3 @@
-<script>
-import { actions } from '../../store/store';
-
-export default {
-    vuex: {
-        actions: actions,
-        getters: {
-            // 过滤后的会话列表
-            sessions: ({ sessions, filterKey }) => {
-                let result = sessions.filter(session => session.user.name.includes(filterKey));
-                return result;
-            },
-            // 当前会话index
-            currentId: ({ currentSessionId }) => currentSessionId
-        }
-    }
-};
-</script>
-
 <template>
 <div class="list">
     <ul>
@@ -27,7 +8,44 @@ export default {
     </ul>
 </div>
 </template>
+<script>
+  export default {
 
+    data(){
+      return{
+        // 会话列表
+        sessions: [
+          {
+            id: 1,
+            user: {
+              name: '示例介绍',
+              img: '../../static/img/2.png'
+            },
+            messages: [
+              {
+                content: 'Hello，这是一个基于Vue + Vuex + Webpack构建的简单chat示例，聊天记录保存在localStorge, 有什么问题可以通过Github Issue问我。',
+                date: "2017-12-12 09:00:00"
+              }, {
+                content: '项目地址: https://github.com/coffcer/vue-chat',
+                date: "2017-12-12 09:00:00"
+              }
+            ]
+          },
+          {
+            id: 2,
+            user: {
+              name: 'webpack',
+              img: '../../static/img/3.jpg'
+            },
+            messages: []
+          }
+        ],
+        // 当前选中的会话
+        currentId: 1,
+      }
+    }
+  };
+</script>
 <style scoped lang="less">
 .list {
     li {

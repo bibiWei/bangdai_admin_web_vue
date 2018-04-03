@@ -1,10 +1,6 @@
 <script>
-import { actions } from '../../store/store';
-
 export default {
-    vuex: {
-        actions: actions
-    },
+
     data () {
         return {
             content: ''

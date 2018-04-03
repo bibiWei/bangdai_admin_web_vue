@@ -1,15 +1,41 @@
 <script>
 
-  import { actions } from '../../store/store';
   export default {
+    data(){
+      return{
+        user: {
+          name: 'coffce',
+          img: '../../static/img/1.jpg'
+        },
+        session: [
+          {
+            id: 1,
+            user: {
+              name: '示例介绍',
+              img: '../../static/img/2.png'
+            },
+            messages: [
+              {
+                content: 'Hello，这是一个基于Vue + Vuex + Webpack构建的简单chat示例，聊天记录保存在localStorge, 有什么问题可以通过Github Issue问我。',
+                date: "2017-12-12 09:00:00"
+              }, {
+                content: '项目地址: https://github.com/coffcer/vue-chat',
+                date: "2017-12-12 09:09:00"
+              }
+            ]
+          },
+          {
+            id: 2,
+            user: {
+              name: 'webpack',
+              img: '../../static/img/3.jpg'
+            },
+            messages: []
+          }
+        ]
 
-    vuex: {
-        getters: {
-            user: ({ user }) => user,
-            session: ({ sessions, currentSessionId }) => sessions.find(session => session.id === currentSessionId)
-        }
+      }
     },
-
     filters: {
         // 将日期过滤为 hour:minutes
         time (date) {
@@ -23,9 +49,9 @@
     directives: {
         // 发送消息后滚动到底部
         'scroll-bottom' () {
-            this.vm.$nextTick(() => {
-                this.el.scrollTop = this.el.scrollHeight - this.el.clientHeight;
-            });
+//            this.vm.$nextTick(() => {
+//                this.el.scrollTop = this.el.scrollHeight - this.el.clientHeight;
+//            });
         }
     }
 

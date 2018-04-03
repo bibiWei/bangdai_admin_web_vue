@@ -1,20 +1,3 @@
-<script>
-
-import { actions } from '../../store/store';
-
-export default {
-    vuex: {
-        actions: actions,
-        getters: {
-            user: ({ user }) => user,
-            filterKey: ({ filterKey }) => filterKey
-        }
-    },
-    methods: {
-    }
-};
-</script>
-
 <template>
 <div class="card">
     <header>
@@ -26,6 +9,21 @@ export default {
     </footer>
 </div>
 </template>
+
+<script>
+  export default {
+    data(){
+      return{
+        user: {
+          name: 'coffce',
+          img: '../../static/img/1.jpg'
+        },
+      }
+    },
+    methods: {
+    }
+  };
+</script>
 
 <style scoped lang="less">
 .card {

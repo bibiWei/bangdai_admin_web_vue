@@ -28,11 +28,13 @@
     <Modal title="聊天窗口" v-model="isChatShow" width="900px">
       <div id="chatApp">
         <div class="sidebar">
-          <card></card>
+
+          <Card></Card>
+          <List></List>
         </div>
         <div class="main">
-          <message></message>
-          <text></text>
+          <Message></Message>
+          <Text></Text>
         </div>
       </div>
     </Modal>
@@ -95,8 +97,7 @@
     },
     methods: {
       doSearchReset(name){
-        this.scoreSearch['name'] = '';
-        this.scoreSearch['stationName'] = '';
+
       },
       showChat(){
         this.isChatShow = true;

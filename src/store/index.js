@@ -15,6 +15,7 @@ let callbackFF = () => {
 }
 
 const store = new Vuex.Store({
+
   strict: true,  // process.env.NODE_ENV !== 'production', 直接修改state 抛出异常
 
   getters: {
