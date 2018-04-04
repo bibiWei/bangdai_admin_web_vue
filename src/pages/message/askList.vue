@@ -42,20 +42,16 @@
 </template>
 <script>
   import swal from 'sweetalert2'
-  import thor from 'thor-x'
-  import { actions } from '../../store/store';
   import Card from '../../components/chat/card.vue';
   import List from '../../components/chat/list.vue';
   import Text from '../../components/chat/text.vue';
   import Message from '../../components/chat/message.vue';
-  Vue.use(thor)
+
   export default {
     components: {
       Card, List, Text, Message
     },
-    vuex: {
-      actions: actions
-    },
+
     data () {
       return {
         count: 10,
