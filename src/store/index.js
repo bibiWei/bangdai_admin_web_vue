@@ -75,11 +75,10 @@ const store = new Vuex.Store({
 
     toggleLoading: ({commit}) => commit(types.TOGGLE_LOADING),
     loadMenuList: ({commit}) => {
-      Vue.axios.defaults.headers.common['platform_token'] = localStorage.getItem("platform_token");
 
 
       Vue.axios.get(apiConfig.PROFILE).then(res => {
-        debugger;
+
         commit(types.SET_USER_INFO, res.data.result.user);
 
       }).catch(
@@ -98,7 +97,6 @@ const store = new Vuex.Store({
         }
       );
       Vue.axios.get("../../static/data/data.json").then(res => {
-        debugger;
            commit(types.LOAD_MENU, res.data.menuList);
       }).catch(
     	exp => {

@@ -1,7 +1,7 @@
 import fetch from './fetch.js'
 import apiConfig from './apiConfig.js'
 
-var sysUser = require("./content/user");
+var user = require("./content/user");
 var sysRole = require("./content/role");
 var sysMenu = require("./content/menu");
 var sysResource = require("./content/resource");
@@ -14,7 +14,12 @@ var address = require("./content/address");
 var product  = require("./content/product");
 var commodityTag = require("./content/commodity_tag");
 var commodityBrand = require("./content/commodity_brand");
-const brandUploadAPI = "//jsonplaceholder.typicode.com/posts/"
+
+var buying = require("./content/buying")
+var taking = require("./content/taking")
+var auth   = require("./content/auth")
+var circle = require("./content/circle")
+
 const login = params => {
   let requestmethod = "post"
   if(apiConfig.LOGIN.indexOf(".json")!=-1)requestmethod = "get"
@@ -32,15 +37,6 @@ export const getBizProfile = params => {
   })
 }
 
-const doUserSave = sysUser.doUserSave;
-const doUserList = sysUser.doUserList;
-const doUserDel  = sysUser.doUserDel;
-const doUserInfo  = sysUser.doUserInfo;
-const doUserRoles = sysUser.doUserRoles;
-const doBindRoles = sysUser.doBindRoles;
-const doUserRoleInfo = sysUser.doUserRoleInfo;
-const doResetPwd = sysUser.doResetPwd;
-const doResetPwdLogin = sysUser.doResetPwdLogin;
 
 const doRoleList = sysRole.doRoleList;
 const doRoleInfo = sysRole.doRoleInfo;
@@ -67,8 +63,6 @@ const doParamInfo = sysParam.doParamInfo;
 const doParamDel  = sysParam.doParamDel;
 const doParamSave  = sysParam.doParamSave;
 const getParamCategory  = sysParam.getParamCategory;
-
-
 
 const getBusinessBaseList = bizBusiness.getBusinessBaseList;
 const doBusinessBaseInfo = bizBusiness.doBusinessBaseInfo;
@@ -104,13 +98,10 @@ const getProductClass = product.getProductClass;
 const getAttrList = product.getAttrList;
 const doCateList = product.doCateList;
 
-
-
 const getTagList = commodityTag.getTagList;
 const doTagInfo = commodityTag.doTagInfo;
 const doTagDel  = commodityTag.doTagDel;
 const doTagSave  = commodityTag.doTagSave;
-
 
 const doBrandInfo = commodityBrand.doBrandInfo;
 const doBrandDel  = commodityBrand.doBrandDel;
@@ -118,13 +109,25 @@ const doBrandSave  = commodityBrand.doBrandSave;
 const brandUploadURL  = commodityBrand.brandUploadURL;
 const getBrandlistWithGroup = commodityBrand.getBrandlistWithGroup;
 
-const SUCCESS = 1;
+//new
+const doBuyingList = buying.getBuyingList;
+const doBuyingDel  = buying.doBuyingDel;
+const doTakingList = taking.getTakingList;
+const doTakingDel = taking.doTakingDel;
+const doAuthList = auth.getAuthList;
+const doAuthPass = auth.doAuthPass;
+const doAuthReject = auth.doAuthReject;
+const doAuthDetail = auth.doAuthDetail;
+const doUserList = user.getUsertList;
+const getCircleList = circle.getCircleList;
+const addCircle = circle.addCircle;
+const getCircleInfo = circle.getCircleInfo;
 
+const SUCCESS = 1;
 
 const apiList = {
   SUCCESS,
   login,getBizProfile,
-  doUserSave,doUserList,doUserDel,doUserInfo,doUserRoles,doBindRoles,doUserRoleInfo,doResetPwd,doResetPwdLogin,
   doRoleList, doRoleInfo, doRoleDel,doRoleSave,doRoleMenu,getBizRoleList,
   doRoleBindMenu,doRoleMenuById,doRoleMenuByBizId,
   doMenuAll, doMenuInfo, doMenuDel,doMenuSave,
@@ -137,6 +140,8 @@ const apiList = {
   getTagList,doTagInfo,doTagDel,doTagSave,
   doBrandInfo,doBrandDel,doBrandSave,brandUploadURL,getBrandlistWithGroup,
   doProductList,getBrandList,getProductById,getProductTypeByCateId,getProductClass,getAttrList,doCateList,
+  doBuyingList,doBuyingDel,doTakingList,doTakingDel,doAuthList,doAuthPass,doAuthReject,doUserList,doAuthDetail,getCircleList,
+  addCircle,getCircleInfo
 }
 
 

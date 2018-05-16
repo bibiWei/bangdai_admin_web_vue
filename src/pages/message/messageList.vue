@@ -3,7 +3,7 @@
     <Breadcrumb>
       <BreadcrumbItem>首页</BreadcrumbItem>
       <BreadcrumbItem>消息管理</BreadcrumbItem>
-      <BreadcrumbItem>消息列表</BreadcrumbItem>
+      <BreadcrumbItem>熊圈列表</BreadcrumbItem>
     </Breadcrumb>
     <Form :label-width="105" style="margin-top: 20px">
       <Row>

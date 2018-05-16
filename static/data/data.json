@@ -22,6 +22,7 @@
     ,"isShow":"1"},
     {"id":5,"parentId":null,"sort":0,"name":"争议管理/消息中心","href":"/message","icon":"fa fa-upload","children": [
       {"id":51,"parentId":5,"sort":0,"name":"争议列表","href":"/message/disputeList","icon":"fa fa-upload","children": [],"isShow":"1"},
+      {"id":52,"parentId":5,"sort":0,"name":"熊圈列表","href":"/message/circleList","icon":"fa fa-upload","children": [],"isShow":"1"},
       {"id":52,"parentId":5,"sort":0,"name":"消息列表","href":"/message/messageList","icon":"fa fa-upload","children": [],"isShow":"1"},
       {"id":53,"parentId":5,"sort":0,"name":"咨询列表","href":"/message/askList","icon":"fa fa-upload","children": [],"isShow":"1"}
 

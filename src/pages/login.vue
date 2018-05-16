@@ -48,7 +48,9 @@
       return {
         form: {
           userCode: 'admin',
-          password: 'admin'
+          password: 'admin',
+          type:1,
+          gtClientId:1
         }
       }
     },
@@ -64,6 +66,7 @@
         this.$api.login(this.form).then(res => {
           if(res.status == this.$api.SUCCESS){
               this.setUserInfo(res.result.userVo);
+              debugger;
               localStorage.setItem('platform_token',res.result.token);
               this.$router.push('/')
           }else{

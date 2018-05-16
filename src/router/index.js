@@ -18,6 +18,7 @@ import disputeList from "../pages/message/disputeList.vue";
 import evaluateList from "../pages/evaluate/evaluateList.vue";
 import allOrderList from "../pages/order/allOrderList.vue";
 import orderDetail from "../pages/order/orderDetail.vue";
+import circleList from "../pages/message/circleList.vue"
 // Routes
 const routes = [
   {path: '/login', component: login},
@@ -41,6 +42,7 @@ const routes = [
       {path: '/evaluate/evaluateList', component: evaluateList},
       {path: '/order/allOrderList', component: allOrderList},
       {path: '/order/orderDetail', component: orderDetail},
+      {path: '/message/circleList', component: circleList},
 
     ]
 

@@ -227,7 +227,7 @@
 
   .main-header .logo .logo-lg {
     display: block;
-    background-image: url("../../../static/img/foot_icon.png");
+    /*background-image: url("../../../static/img/foot_icon.png");*/
     background-repeat: no-repeat;
     background-position: 15px -6px;
     height: 38px;

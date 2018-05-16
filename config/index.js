@@ -30,7 +30,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
-    baseServerUrl: 'http://localhost:8082',
+    baseServerUrl: 'http://39.105.65.35:8082/papi',
     //baseServerUrl: 'http://localhost:8765/gateway',
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
@@ -46,7 +46,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
-    baseServerUrl: 'http://localhost:8082',
+    baseServerUrl: 'http://39.105.65.35:8082/papi',
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

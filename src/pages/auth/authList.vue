@@ -33,47 +33,40 @@
     <Modal title="查看" v-model="isAuthInfo" width="900px">
       <Tabs value="name1">
         <TabPane :label="idAuth" name="name1">
-          <Form>
+          <Form v-model="authInfoForm">
             <Row :gutter="16">
               <Col span="6">
-                <FormItem label="身份证号码" >
-                  <Input type="text"  placeholder="210502199204290653"  disabled></Input>
+                <FormItem label="身份证号码"  >
+                  <Input type="text"  v-model="authInfoForm.certNo" readonly="readonly"></Input>
                 </FormItem>
               </Col>
               <Col span="6">
                 <FormItem label="姓名" >
-                  <Input type="text"  placeholder="xxx"  disabled></Input>
+                  <Input type="text"  v-model="authInfoForm.name" readonly="readonly"></Input>
                 </FormItem>
               </Col>
               <Col span="6">
                 <FormItem label="性别" >
-                  <Input type="text"  placeholder="男"  disabled></Input>
+                  <Input type="text" v-model="authInfoForm.gender" readonly="readonly"></Input>
                 </FormItem>
               </Col>
               <Col span="6">
                 <FormItem label="年龄" >
-                  <Input type="text"  placeholder="32"  disabled></Input>
+                  <Input type="text" v-model="authInfoForm.age" readonly="readonly"></Input>
                 </FormItem>
               </Col>
             </Row>
           </Form>
           <Row :gutter="16">
-            <Col span="12">
+            <Col span="24">
               <Card>
                 <div style="text-align:center">
-                  <img src="../../../static/img/pic.jpeg" width="280px">
+                  <img :src="authInfoForm.certPicUrl" width="280px">
                   <h3>身份证正面</h3>
                 </div>
               </Card>
             </Col>
-            <Col span="12">
-              <Card>
-                <div style="text-align:center">
-                  <img src="../../../static/img/pic.jpeg" width="280px">
-                  <h3>身份证反面</h3>
-                </div>
-              </Card>
-            </Col>
+
           </Row>
           <Row :gutter="100" style="margin-top: 3em;text-align: center">
             <Col span="12">
@@ -89,22 +82,22 @@
             <Row :gutter="16">
               <Col span="6">
               <FormItem label="护照号码" >
-                <Input type="text"  placeholder="210502199204290653"  disabled></Input>
+                <Input type="text"  readonly="readonly"></Input>
               </FormItem>
               </Col>
               <Col span="6">
               <FormItem label="姓名" >
-                <Input type="text"  placeholder="xxx"  disabled></Input>
+                <Input type="text"  readonly="readonly"></Input>
               </FormItem>
               </Col>
               <Col span="6">
               <FormItem label="性别" >
-                <Input type="text"  placeholder="男"  disabled></Input>
+                <Input type="text"  readonly="readonly"></Input>
               </FormItem>
               </Col>
               <Col span="6">
               <FormItem label="年龄" >
-                <Input type="text"  placeholder="32"  disabled></Input>
+                <Input type="text"  readonly="readonly"></Input>
               </FormItem>
               </Col>
             </Row>
@@ -176,6 +169,23 @@
     components: {},
     data () {
       return {
+        authId:0,
+        rejectValue:'',
+        authInfoForm:{
+          certNo:'',
+          name:'',
+          gender:'',
+          age:'',
+          certPicUrl:'',
+          certType:'',
+          id:'',
+          photoIdUrl:'',
+          rejectReason:'',
+          status:'',
+          userId:''
+
+
+        },
         scoreSearch:{
           stationName:'',
           name:''
@@ -185,16 +195,38 @@
         tagInfo:false,
         delTagRecord:null,
         isAuthInfo:false,
-
         idAuth: (h) => {
-          return h('div', [
-            h('span', '身份证认证'),
-            h('Badge', {
-              props: {
-                count: '未认证',
-              }
-            })
-          ])
+          if(this.authInfoForm.status == 3){
+            return h('div', [
+              h('span', '身份证认证'),
+              h('Badge', {
+                props: {
+                  count: '已驳回',
+                }
+              })
+            ])
+          }
+          if(this.authInfoForm.status == 2){
+            return h('div', [
+              h('span', '身份证认证'),
+              h('Badge', {
+                props: {
+                  count: '已认证',
+                }
+              })
+            ])
+          }
+          if(this.authInfoForm.status == 1){
+            return h('div', [
+              h('span', '身份证认证'),
+              h('Badge', {
+                props: {
+                  count: '未认证',
+                }
+              })
+            ])
+          }
+
         },
         pshAuth: (h) => {
           return h('div', [
@@ -222,25 +254,18 @@
           { type: 'index', width: 60,  align: 'center' },
           { title: '账号',key: 'col_1',align: 'center'},
           { title: '手机号', key: 'col_2',  align: 'center'},
-          { title: '昵称', key: 'col_3', align: 'center'},
+          { title: '昵称', key: 'name', align: 'center'},
           { title: '创建日期', key: 'col_4', align: 'center'},
           { title: '操作', key: 'action', width: 130, align: 'center',
             render: (h, params) => {
               return h('div', [
                 h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.showAuth(params.row) } } }, '查看'),
-                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.show(params.row) } } }, '审核'),
+                  on: { click: () => { this.showAuth(params.row) } } }, '查看')
               ]);
             }}
         ],
         ListData: [
-          {
-            col_1:"cosSean",
-            col_2:"18766312029",
-            col_3:"小李",
-            col_4:"2017-12-12",
-          }
+
         ],
         ruleValidate: {
           tagName: [{required: true, message: '标签名称不能为空', trigger: 'blur'}],
@@ -249,6 +274,24 @@
       }
     },
     methods: {
+
+      doAuthList(){
+        let param = {
+          pageNo:1,
+          pageSize:10
+        }
+
+        this.$api.doAuthList(param).then(res => {
+          this.ListData = [];
+          if(res.status == this.$api.SUCCESS){
+            this.ListData = res.result;
+          }else{
+            // swal(res.message);
+          }
+        })
+      },
+
+
       doSearchReset(name){
         this.scoreSearch['name'] = '';
         this.scoreSearch['stationName'] = '';
@@ -256,11 +299,41 @@
 
       search(startIndex , endIndex){
       },
-      showAuth(){
+      showAuth(row) {
         this.isAuthInfo = true;
+        this.authId = row.id;
+        this.doAuthDetail(row.id);
       },
+
+      doAuthDetail(id){
+        this.$api.doAuthDetail(id).then(res => {
+          this.ListData = [];
+          if(res.status == this.$api.SUCCESS){
+             this.authInfoForm = res.result;
+             debugger;
+          }else{
+            // swal(res.message);
+          }
+        })
+      },
+
+
       doRefuse(){
+
+        if(this.authInfoForm.status !== 1){
+
+        }
         this.$Modal.confirm({
+          onOk: () =>{
+            this.$api.doAuthReject(this.authId,this.rejectValue).then(res => {
+              if(res.status == this.$api.SUCCESS){
+                this.isAuthInfo = false;
+                swal({text: '驳回成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+              }else{
+                // swal(res.message);
+              }
+            })
+          },
           render: (h) => {
             return h('Input', {
               props: {
@@ -268,10 +341,9 @@
                 value: this.value,
                 autofocus: true,
                 placeholder: '请输入驳回理由'
-              },
-              on: {
+              }, on: {
                 input: (val) => {
-                  this.value = val;
+                  this.rejectValue = val;
                 }
               }
             })
@@ -279,12 +351,21 @@
         })
       },
       doAgree(){
-          swal({text: '审核成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+        this.$api.doAuthPass(this.authId).then(res => {
+          if(res.status == this.$api.SUCCESS){
+            this.isAuthInfo = false;
+            swal({text: '审核成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+          }else{
+            // swal(res.message);
+          }
+        })
+
       }
     },
     created(){
       this.doSearchReset()
       this.search()
+      this.doAuthList()
     }
   }
 </script>

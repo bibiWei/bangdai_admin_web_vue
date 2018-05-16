@@ -30,7 +30,10 @@ export default function fetch (options) {
     // http request 拦截器
     instance.interceptors.request.use(
       config => {
-        //config.headers.platform_token = localStorage.getItem("platform_token");
+        if(config.url.indexOf(LOGIN) == -1){
+          config.headers.Authorization = localStorage.getItem("platform_token");
+        }
+
         if(config.url.indexOf("__spin__")==-1){
           iview.Spin.show()
         }
@@ -43,15 +46,7 @@ export default function fetch (options) {
     // http response 拦截器
     instance.interceptors.response.use(
       response => {
-        if(process.env.NODE_ENV === 'ut'){
 
-        }else{
-          if(response.request.responseURL && response.request.responseURL.indexOf(LOGIN)!=-1){
-            localStorage.setItem("platform_token",response.data.result);
-          }else{
-            localStorage.setItem("platform_token",response.headers['platform_token']);
-          }
-        }
         if(response.request.responseURL && response.request.responseURL.indexOf("__spin__")==-1){
           iview.Spin.hide()
         }

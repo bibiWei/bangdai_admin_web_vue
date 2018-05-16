@@ -10,8 +10,8 @@ const SERVER_BASE_URL = (isProduction ? config.build.baseServerUrl : (isUT ? con
 //const SERVER_BASE_URL = "http://localhost:8082";
 const securityModuleName = isUT ? "" : "/api/security";
 const commodityModuleName = isUT ? "" : "/api/commodity";
-const SECURITY_V1 = SERVER_BASE_URL+securityModuleName+"/v1";
-const COMMODITY_V1 = SERVER_BASE_URL+commodityModuleName+"/v1";
+const SECURITY_V1 = SERVER_BASE_URL+"/api";
+const COMMODITY_V1 = SERVER_BASE_URL + "/api";
 
 let LOGIN , LOGOUT , CHANGE_PWD , PROFILE , BIZ_PROFILE;
 if(isUT){
@@ -103,7 +103,19 @@ let SYS_USER_LIST = SECURITY_V1+'/userlist',
     COMMODITY_LIST   = COMMODITY_V1 + "/commodityInfo/commodityInfolist",
     COMMODITY_INFO_BY_ID = COMMODITY_V1 + "/commodityInfo/",
 
-    A = "A";
+    //for new
+    BUYING_LIST = COMMODITY_V1 + "/requestBring/list",
+    BUYING_DEL  = COMMODITY_V1 + "/requestBring/del",
+    TAKING_LIST = COMMODITY_V1 + "/helpBring/list",
+    TAKING_DEL  =  COMMODITY_V1 + "/helpBring/del",
+    AUTH_LIST   =  COMMODITY_V1 + "/auth/list",
+    AUTH_PASS   =  COMMODITY_V1 + "/auth/pass",
+    AUTH_DETAIL = COMMODITY_V1 + "/auth/detail",
+    AUTH_REJECT = COMMODITY_V1 + "/auth/reject",
+    USER_LIST   = COMMODITY_V1 + "/user/list",
+    CIRCLE_LIST = COMMODITY_V1 + "/message/list",
+    CIRCLE_ADD  = COMMODITY_V1 + "/message/issue",
+    CIRCLE_INFO = COMMODITY_V1 + "/message/detail"
 export {
   LOGIN , LOGOUT,CHANGE_PWD,PROFILE,BIZ_PROFILE,
   SYS_USER_LIST,SYS_USER_SAVE,SYS_USER_DEL,SYS_USER_INFO,SYS_USER_BIND_ROLES,SYS_USER_ROLE_INFO,SYS_USER_RESET_PWD,SYS_USER_RESET_PWD_LOIGN,
@@ -117,5 +129,7 @@ export {
   EMPLOYEE_LIST,EMPLOYEE_SAVE,EMPLOYEE_INFO,EMPLOYEE_DEL,
   ADDRESS_LIST,ADDRESS_SAVE,ADDRESS_INFO,ADDRESS_DEL,
   TAG_LIST,TAG_SAVE,TAG_INFO,TAG_DEL,
-  BRAND_LIST,BRAND_SAVE,BRAND_INFO,BRAND_DEL,BRAND_UPLOAD,BRAND_WITH_GROUP,COMMODITY_LIST,COMMODITY_INFO_BY_ID
+  BRAND_LIST,BRAND_SAVE,BRAND_INFO,BRAND_DEL,BRAND_UPLOAD,BRAND_WITH_GROUP,COMMODITY_LIST,COMMODITY_INFO_BY_ID,
+  //new
+  BUYING_LIST,BUYING_DEL,TAKING_LIST,TAKING_DEL,AUTH_LIST,AUTH_PASS,AUTH_REJECT,USER_LIST,AUTH_DETAIL,CIRCLE_LIST,CIRCLE_ADD,CIRCLE_INFO
 }

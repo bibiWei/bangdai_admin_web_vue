@@ -21,7 +21,6 @@ module.exports = {
       libraryTarget: 'umd',   // 输出格式
   },
   externals: {
-     //
       vue: {
             root: 'Vue',
             commonjs: 'vue',

@@ -1,22 +1,20 @@
-
-
 import fetch from '../fetch.js'
 import apiConfig from '../apiConfig.js'
 
-export const getUsertList = params => {
+export const getBuyingList = params => {
   let pageNo = params["pageNo"];
   let pageSize = params["pageSize"];
   return fetch({
-    url: apiConfig.USER_LIST + "?pageNo=" + pageNo + "&pageSize=" + pageSize,
+    url: apiConfig.BUYING_LIST + "?pageNo=" + pageNo + "&pageSize=" + pageSize,
     method: 'get'
   })
 }
 
 
 
-export const doUserDel = id => {
+export const doBuyingDel = id => {
   return fetch({
-    url: apiConfig.TAKING_DEL + id,
+    url: apiConfig.BUYING_DEL + id,
     method: 'delete',
   })
 }

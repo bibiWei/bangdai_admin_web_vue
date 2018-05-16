@@ -33,18 +33,18 @@
         <Table border :columns="tagList" :data="ListData"></Table>
         <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
       </TabPane>
-      <TabPane label="已审核">
-        <Table border :columns="tagList" :data="ListData"></Table>
-        <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
-      </TabPane>
-      <TabPane label="未审核">
-        <Table border :columns="tagList" :data="ListData"></Table>
-        <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
-      </TabPane>
-      <TabPane label="已驳回">
-        <Table border :columns="tagList" :data="ListData"></Table>
-        <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
-      </TabPane>
+      <!--<TabPane label="已审核">-->
+        <!--<Table border :columns="tagList" :data="ListData"></Table>-->
+        <!--<Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>-->
+      <!--</TabPane>-->
+      <!--<TabPane label="未审核">-->
+        <!--<Table border :columns="tagList" :data="ListData"></Table>-->
+        <!--<Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>-->
+      <!--</TabPane>-->
+      <!--<TabPane label="已驳回">-->
+        <!--<Table border :columns="tagList" :data="ListData"></Table>-->
+        <!--<Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>-->
+      <!--</TabPane>-->
     </Tabs>
     <div>
       <Modal
@@ -53,33 +53,33 @@
         :mask-closable="false"
         :loading="true"
         width="760px">
-        <Form  label-position="top" >
+        <Form  label-position="top" v-model="userForm">
           <Row :gutter="10">
             <Col span="8">
               <FormItem label="用户名">
                 <Input v-show="false" ></Input>
-                <Input type="text" placeholder="请输入用户名"></Input>
+                <Input type="text" v-model="userForm.userCode"></Input>
               </FormItem>
             </Col>
             <Col span="8" >
             <FormItem label="手机区号">
-              <Select  placeholder="请选择手机区号">
+              <Select   v-model="userForm.countryCode">
                 <Option value="">请选择</Option>
-                <Option value="P">中国(+86)</Option>
-                <Option value="B">美国(+12)</Option>
+                <Option value="CN">中国(+86)</Option>
+                <Option value="US">美国(+12)</Option>
               </Select>
             </FormItem>
             </Col>
             <Col span="8">
             <FormItem label="手机号码" >
-              <Input placeholder="请输入手机号码" ></Input>
+              <Input  v-model="userForm.phone"></Input>
             </FormItem>
             </Col>
           </Row>
           <Row :gutter="10">
             <Col span="8">
             <FormItem label="昵称" >
-              <Input placeholder="请输入昵称" ></Input>
+              <Input  v-model="userForm.nickName" ></Input>
             </FormItem>
             </Col>
             <Col span="8">
@@ -92,14 +92,14 @@
             </Col>
             <Col span="8">
             <FormItem label="注册时间" >
-              <Input  placeholder="2017-12-12" disabled=true></Input>
+              <Input  placeholder="2017-12-12" readonly="readonly"></Input>
             </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span="24" >
             <FormItem label="备注" prop="remarks">
-              <el-input type="textarea" placeholder="请输入备注信息"></el-input>
+              <el-input type="textarea" ></el-input>
             </FormItem>
             </Col>
           </Row>
@@ -148,6 +148,12 @@
         showUserInfo:false,
         checkUserInfo:false,
         delUserInfo:false,
+        userForm:{
+          userCode:'',
+          phone:'',
+          countryCode:'',
+          nickName:''
+        },
         scoreSearch:{
           stationName:'',
           name:''
@@ -159,9 +165,9 @@
         delTag:false,
         tagList: [
           { type: 'index', width: 60,  align: 'center' },
-          { title: '账号',key: 'col_1',align: 'center'},
-          { title: '手机号', key: 'col_2',  align: 'center'},
-          { title: '昵称', key: 'col_3', align: 'center'},
+          { title: '账号',key: 'userCode',align: 'center'},
+          { title: '手机号', key: 'phone',  align: 'center'},
+          { title: '昵称', key: 'nickName', align: 'center'},
           { title: '注册时间', key: 'col_4', align: 'center'},
           { title: '状态', key: 'col_5', align: 'center'},
           { title: '操作', key: 'action', width: 180, align: 'center',
@@ -169,21 +175,15 @@
               return h('div', [
                 h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
                   on: { click: () => { this.showUser(params.row) } } }, '详情'),
-                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.checkUser(params.row) } } }, '审核'),
+//                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
+//                  on: { click: () => { this.checkUser(params.row) } } }, '审核'),
                 h('Button', { props: { type: 'error', size: 'small' },
                   on: { click: () => { this.delUser(params.row) } } }, '删除')
               ]);
             }}
         ],
         ListData: [
-          {
-            col_1:"allen",
-            col_2:"13704223312",
-            col_3:"阿弥斯特丹",
-            col_4:"2017-12-23",
-            col_5:"未审核",
-          }
+
         ],
         ruleValidate: {
           tagName: [{required: true, message: '标签名称不能为空', trigger: 'blur'}],
@@ -192,12 +192,29 @@
       }
     },
     methods: {
+
+      doUsertList(){
+        let param = {
+          pageNo:1,
+          pageSize:10
+        }
+        this.$api.doUserList(param).then(res => {
+          this.ListData = [];
+          if(res.status == this.$api.SUCCESS){
+            this.ListData = res.result;
+          }else{
+            // swal(res.message);
+          }
+        })
+      },
+
       doSearchReset(name){
       },
       search(startIndex , endIndex){
       },
       showUser(row){
         this.showUserInfo = true;
+        this.userForm = row;
       },
       userInfoCancel(){
         this.showUserInfo = false;
@@ -233,8 +250,9 @@
 
     },
     created(){
-      this.doSearchReset()
-      this.search()
+      this.doSearchReset();
+      this.search();
+      this.doUsertList();
     }
   }
 </script>
