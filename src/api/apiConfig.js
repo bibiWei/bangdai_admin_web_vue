@@ -97,6 +97,8 @@ let apiConfig = {
   AUTH_DETAIL:config.AUTH_DETAIL,
   CIRCLE_LIST:config.CIRCLE_LIST,
   CIRCLE_ADD:config.CIRCLE_ADD,
-  CIRCLE_INFO:config.CIRCLE_INFO
+  CIRCLE_INFO:config.CIRCLE_INFO,
+  ORDER_ALL_LIST:config.ORDER_ALL_LIST,
+  EXCHANGE_ALL_LIST:config.EXCHANGE_ALL_LIST
 }
 export default apiConfig

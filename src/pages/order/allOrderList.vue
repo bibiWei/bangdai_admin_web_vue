@@ -49,7 +49,8 @@
       </Row>
     </Form>
     <Table border :columns="tagList" :data="ListData"></Table>
-    <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
+    <Page :total="total" :page-size="pageSize" size="small" show-elevator show-sizer show-total
+          style="float: right;margin-top: 10px" @on-change="doPageChange"></Page>
   </div>
 </template>
 <script>
@@ -69,15 +70,15 @@
         delTag:false,
         tagList: [
           { type: 'index', width: 60,  align: 'center' },
-          { title: '订单编号',key: 'col_1',align: 'center'},
-          { title: '起始地', key: 'col_2',  align: 'center'},
-          { title: '目的地', key: 'col_3', align: 'center'},
-          { title: '出发时间', key: 'col_4', align: 'center'},
-          { title: '到达时间', key: 'col_5', align: 'center'},
-          { title: '帮带人', key: 'col_6', align: 'center'},
-          { title: '求带人', key: 'col_7', align: 'center'},
-          { title: '订单价格/RMB', width:120, key: 'col_8', align: 'center'},
-          { title: '状态', key: 'col_9', align: 'center'},
+          { title: '订单编号',key: 'orderNo',align: 'center'},
+          { title: '起始地', key: 'departureAddress',  align: 'center'},
+          { title: '目的地', key: 'arrivalAddress', align: 'center'},
+          { title: '出发时间', key: 'departureDate', align: 'center'},
+          { title: '到达时间', key: 'arrivalDate', align: 'center'},
+          { title: '帮带人', key: 'taker', align: 'center'},
+          { title: '求带人', key: 'buyer', align: 'center'},
+          { title: '订单价格/RMB', width:120, key: 'negotiatePrice', align: 'center'},
+          { title: '状态', key: 'statusName', align: 'center'},
           { title: '操作', key: 'action', width: 180, align: 'center',
             render: (h, params) => {
               return h('div', [
@@ -89,17 +90,6 @@
             }}
         ],
         ListData: [
-          {
-            col_1:"order_0001",
-            col_2:"北京",
-            col_3:"棉花堡",
-            col_4:"2018-12-12",
-            col_5:"2018-12-15",
-            col_6:"小李",
-            col_7:"小王",
-            col_8:"22.3",
-            col_9:"待支付",
-          }
         ],
         ruleValidate: {
           tagName: [{required: true, message: '标签名称不能为空', trigger: 'blur'}],
@@ -118,10 +108,52 @@
       },
       search(startIndex , endIndex){
       },
+
+      loadData() {
+        this.doAllOrderList(this.$table.INIT_PAGE_NO, this.$table.INIT_PAGE_SIZE);
+      },
+      doPageChange(pagenumber) {
+        this.doAllOrderList(pagenumber, this.pageSize);
+      },
+      doAllOrderList(pageNo,pageSize){
+        let param = {
+          pageNo:pageNo,
+          pageSize:pageSize
+        }
+        this.$api.getAllOrderList(param).then(res => {
+          this.ListData = [];
+          if(res.status == this.$api.SUCCESS){
+            this.total = res.result.pagination.total;
+            this.ListData = res.result.data;
+            for(let data of this.ListData){
+              data.buyer = data.reqBringVo.userName;
+              data.taker = data.helpBringVo.userName;
+              data.departureAddress = data.helpBringVo.departureCountry + "-" + data.helpBringVo.arrivalProvince + "-" + data.helpBringVo.departureCity
+              data.arrivalAddress = data.helpBringVo.arrivalCountry + "-" + data.helpBringVo.arrivalProvince + "-" + data.helpBringVo.arrivalCity
+              data.departureDate = data.helpBringVo.departureDate.substring(0,10);
+              data.arrivalDate = data.helpBringVo.arrivalDate.substring(0,10);
+              if(data.status === 1){
+                data.statusName = "等待确认";
+              }else if(data.status === 2){
+                data.statusName = "已确认带支付";
+              }else if(data.status === 3){
+                data.statusName = "已支付";
+              }else if(data.status === 4) {
+                data.statusName = "待发货";
+              }else if(data.status === 5){
+                data.statusName = "已完成";
+              }
+            }
+          }else{
+            // swal(res.message);
+          }
+        })
+      }
     },
     created(){
-      this.doSearchReset()
-      this.search()
+      this.doSearchReset();
+      this.search();
+      this.loadData();
     }
   }
 </script>

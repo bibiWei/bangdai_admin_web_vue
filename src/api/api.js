@@ -19,6 +19,8 @@ var buying = require("./content/buying")
 var taking = require("./content/taking")
 var auth   = require("./content/auth")
 var circle = require("./content/circle")
+var order = require("./content/order")
+var exchange = require("./content/exchange")
 
 const login = params => {
   let requestmethod = "post"
@@ -122,6 +124,8 @@ const doUserList = user.getUsertList;
 const getCircleList = circle.getCircleList;
 const addCircle = circle.addCircle;
 const getCircleInfo = circle.getCircleInfo;
+const getAllOrderList = order.getAllOrderList;
+const getExchangeList = exchange.getExchangeList;
 
 const SUCCESS = 1;
 
@@ -141,7 +145,7 @@ const apiList = {
   doBrandInfo,doBrandDel,doBrandSave,brandUploadURL,getBrandlistWithGroup,
   doProductList,getBrandList,getProductById,getProductTypeByCateId,getProductClass,getAttrList,doCateList,
   doBuyingList,doBuyingDel,doTakingList,doTakingDel,doAuthList,doAuthPass,doAuthReject,doUserList,doAuthDetail,getCircleList,
-  addCircle,getCircleInfo
+  addCircle,getCircleInfo,getAllOrderList,getExchangeList
 }
 
 
