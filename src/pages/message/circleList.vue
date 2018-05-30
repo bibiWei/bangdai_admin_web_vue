@@ -52,9 +52,9 @@
           </Col>
           <Col span="8">
           <div>
-            <up-Load class="files" :data="item"
-                     typeArr="image/png,image/jpg,image/gif,image/jpeg" size="50000000"></up-Load>
+
           </div>
+
           </Col>
 
           <Col span="24">
@@ -70,20 +70,18 @@
     </Modal>
   </div>
 </template>
-
 <script>
   import swal from 'sweetalert2'
   import { VueEditor } from 'vue2-editor'
-  import uploadImg from '../../components/upload/uploadImg.vue'
+
   export default {
     components: {
       VueEditor,
-      'up-Load':uploadImg
     },
     name: 'circleList',
     data () {
       return {
-        item:'',
+        item:{},
         circleForm:{
           title:'',
           issueDate:'',

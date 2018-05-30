@@ -5,25 +5,20 @@
       <BreadcrumbItem>用户管理</BreadcrumbItem>
       <BreadcrumbItem>用户名称</BreadcrumbItem>
     </Breadcrumb>
-    <Form  :label-width="105" style="margin-top: 20px">
+    <Form  :label-width="105" style="margin-top: 20px" v-model="searchForm">
       <Row>
         <Col span="7">
-          <FormItem label="账号">
-            <Input placeholder="请输入账号"></Input>
-          </FormItem>
-        </Col>
-        <Col span="7">
           <FormItem label="手机号码">
-            <Input placeholder="请输入用户手机号码"></Input>
+            <Input placeholder="请输入用户手机号码" v-model="searchForm.phone"></Input>
           </FormItem>
         </Col>
         <Col span="7">
           <FormItem label="用户昵称">
-            <Input placeholder="请输入服务站名称"></Input>
+            <Input placeholder="请输入服务站名称" v-model="searchForm.nickName"></Input>
           </FormItem>
         </Col>
         <Col span="3" style="float: right">
-          <Button type="ghost" style="float:right;margin-left: 10px;" @click="doSearchReset">重置</Button>
+          <Button type="ghost" style="float:right;margin-left: 10px;" @click="doSearchReset()">重置</Button>
           <Button type="primary" style="float:right;margin-left: 10px;" @click="search()">查询</Button>
         </Col>
       </Row>
@@ -31,7 +26,8 @@
     <Tabs type="card">
       <TabPane label="全部">
         <Table border :columns="tagList" :data="ListData"></Table>
-        <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
+        <Page :total="total" :page-size="pageSize" size="small" show-elevator show-sizer show-total
+              style="float: right;margin-top: 10px" @on-change="doPageChange"></Page>
       </TabPane>
       <!--<TabPane label="已审核">-->
         <!--<Table border :columns="tagList" :data="ListData"></Table>-->
@@ -58,41 +54,34 @@
             <Col span="8">
               <FormItem label="用户名">
                 <Input v-show="false" ></Input>
-                <Input type="text" v-model="userForm.userCode"></Input>
+                <Input type="text" v-model="userForm.userCode" readonly="readonly"  ></Input>
               </FormItem>
             </Col>
             <Col span="8" >
             <FormItem label="手机区号">
-              <Select   v-model="userForm.countryCode">
-                <Option value="">请选择</Option>
-                <Option value="CN">中国(+86)</Option>
-                <Option value="US">美国(+12)</Option>
-              </Select>
+              <Input   readonly="readonly" v-model="userForm.countryCode"></Input>
             </FormItem>
             </Col>
             <Col span="8">
             <FormItem label="手机号码" >
-              <Input  v-model="userForm.phone"></Input>
+              <Input  v-model="userForm.phone" readonly="readonly" ></Input>
             </FormItem>
             </Col>
           </Row>
           <Row :gutter="10">
             <Col span="8">
             <FormItem label="昵称" >
-              <Input  v-model="userForm.nickName" ></Input>
+              <Input  v-model="userForm.nickName" readonly="readonly" ></Input>
             </FormItem>
             </Col>
             <Col span="8">
             <FormItem label="状态" >
-              <Select  >
-                <Option value="00">可用</Option>
-                <Option value="01">禁用</Option>
-              </Select>
+              <Input   readonly="readonly" v-model="userForm.statusName"></Input>
             </FormItem>
             </Col>
             <Col span="8">
             <FormItem label="注册时间" >
-              <Input  placeholder="2017-12-12" readonly="readonly"></Input>
+              <Input  placeholder="2017-12-12" readonly="readonly" v-model="userForm.registerTime"></Input>
             </FormItem>
             </Col>
           </Row>
@@ -109,32 +98,32 @@
           <Button type="primary" size="large" @click="doUserSave">确定</Button>
         </div>
       </Modal>
-      <Modal v-model="checkUserInfo" width="460">
-        <p slot="header" style="color:#f60;text-align:left">
-          <Icon type="information-circled"></Icon>
-          <span>提示信息</span>
-        </p>
-        <div style="padding-left:20px">
-          <span style="font-size:16px">您确定要通过审核此用户(<span>用户名:xxxx</span>)吗？</span>
-        </div>
-        <div slot="footer">
-          <Button type="primary" size="large"  @click="doCkeckUser">通过</Button>
-          <Button type="error" size="large"  @click="doReCkeckUser">驳回</Button>
-        </div>
-      </Modal>
-      <Modal v-model="delUserInfo" width="460">
-        <p slot="header" style="color:#f60;text-align:left">
-          <Icon type="information-circled"></Icon>
-          <span>提示信息</span>
-        </p>
-        <div style="padding-left:20px">
-          <span style="font-size:16px">您确定要删除此用户(<span>用户名:xxxx</span>)吗？</span>
-        </div>
-        <div slot="footer">
-          <Button type="text" size="large" @click="delCancel">取消</Button>
-          <Button type="error" size="large"  @click="doDelUser">删除</Button>
-        </div>
-      </Modal>
+      <!--<Modal v-model="checkUserInfo" width="460">-->
+        <!--<p slot="header" style="color:#f60;text-align:left">-->
+          <!--<Icon type="information-circled"></Icon>-->
+          <!--<span>提示信息</span>-->
+        <!--</p>-->
+        <!--<div style="padding-left:20px">-->
+          <!--<span style="font-size:16px">您确定要通过审核此用户(<span>用户名:xxxx</span>)吗？</span>-->
+        <!--</div>-->
+        <!--<div slot="footer">-->
+          <!--<Button type="primary" size="large"  @click="doCkeckUser">通过</Button>-->
+          <!--<Button type="error" size="large"  @click="doReCkeckUser">驳回</Button>-->
+        <!--</div>-->
+      <!--</Modal>-->
+      <!--<Modal v-model="delUserInfo" width="460">-->
+        <!--<p slot="header" style="color:#f60;text-align:left">-->
+          <!--<Icon type="information-circled"></Icon>-->
+          <!--<span>提示信息</span>-->
+        <!--</p>-->
+        <!--<div style="padding-left:20px">-->
+          <!--<span style="font-size:16px">您确定要删除此用户(<span>用户名:xxxx</span>)吗？</span>-->
+        <!--</div>-->
+        <!--<div slot="footer">-->
+          <!--<Button type="text" size="large" @click="delCancel">取消</Button>-->
+          <!--<Button type="error" size="large"  @click="doDelUser">删除</Button>-->
+        <!--</div>-->
+      <!--</Modal>-->
     </div>
   </div>
 
@@ -144,7 +133,12 @@
   export default {
     components: {},
     data () {
+
       return {
+        searchForm:{
+          phone:'',
+          nickName:''
+        },
         showUserInfo:false,
         checkUserInfo:false,
         delUserInfo:false,
@@ -152,7 +146,9 @@
           userCode:'',
           phone:'',
           countryCode:'',
-          nickName:''
+          nickName:'',
+          registerTime:'',
+          statusName:'',
         },
         scoreSearch:{
           stationName:'',
@@ -168,8 +164,8 @@
           { title: '账号',key: 'userCode',align: 'center'},
           { title: '手机号', key: 'phone',  align: 'center'},
           { title: '昵称', key: 'nickName', align: 'center'},
-          { title: '注册时间', key: 'col_4', align: 'center'},
-          { title: '状态', key: 'col_5', align: 'center'},
+          { title: '注册时间', key: 'registerTime', align: 'center'},
+          { title: '状态', key: 'statusName', align: 'center'},
           { title: '操作', key: 'action', width: 180, align: 'center',
             render: (h, params) => {
               return h('div', [
@@ -177,40 +173,53 @@
                   on: { click: () => { this.showUser(params.row) } } }, '详情'),
 //                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
 //                  on: { click: () => { this.checkUser(params.row) } } }, '审核'),
-                h('Button', { props: { type: 'error', size: 'small' },
-                  on: { click: () => { this.delUser(params.row) } } }, '删除')
+//                h('Button', { props: { type: 'error', size: 'small' },
+//                  on: { click: () => { this.delUser(params.row) } } }, '删除')
               ]);
             }}
         ],
         ListData: [
 
         ],
-        ruleValidate: {
-          tagName: [{required: true, message: '标签名称不能为空', trigger: 'blur'}],
-          tagRemark:[{type:"string",max: 400, message: '备注名称必须少于400个字符', trigger: 'blur'}]
-        },
+
       }
     },
     methods: {
+      doPageChange(pagenumber) {
+        this.doUsertList(pagenumber, this.pageSize);
+      },
 
-      doUsertList(){
+      doUsertList(pageNo,pageSize){
         let param = {
-          pageNo:1,
-          pageSize:10
+          pageNo:pageNo,
+          pageSize:pageSize,
+          phone:this.searchForm.phone,
+          nickName:this.searchForm.nickName
         }
         this.$api.doUserList(param).then(res => {
           this.ListData = [];
           if(res.status == this.$api.SUCCESS){
-            this.ListData = res.result;
+            this.total = res.result.pagination.total;
+            this.ListData = res.result.data;
+            for(let data of this.ListData ){
+              data.registerTime =  data.registerTime.substring(0,19);
+              if(data.status == 2){
+                data.statusName = "已认证";
+              }else{
+                data.statusName = "未认证";
+              }
+            }
           }else{
-            // swal(res.message);
           }
         })
       },
 
-      doSearchReset(name){
+      doSearchReset(){
+        this.searchForm["phone"] = "";
+        this.searchForm["nickName"] = "";
       },
-      search(startIndex , endIndex){
+      search(){
+        this.doUsertList(this.$table.INIT_PAGE_NO, this.$table.INIT_PAGE_SIZE);
       },
       showUser(row){
         this.showUserInfo = true;
@@ -251,8 +260,7 @@
     },
     created(){
       this.doSearchReset();
-      this.search();
-      this.doUsertList();
+      this.doUsertList(this.$table.INIT_PAGE_NO, this.$table.INIT_PAGE_SIZE);
     }
   }
 </script>

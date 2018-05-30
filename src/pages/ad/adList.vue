@@ -31,9 +31,15 @@
           <Button type="primary" style="float:right;margin-left: 10px;" @click="search()">查询</Button>
         </Col>
       </Row>
+      <Row>
+        <Col span="24" style="float: right">
+        <Button type="primary" style="float:right;margin-left: 10px;" @click="showAdd()">新增</Button>
+        </Col>
+      </Row>
     </Form>
     <Table border :columns="tagList" :data="ListData"></Table>
-    <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
+    <Page :total="total" :page-size="pageSize" size="small" show-elevator show-sizer show-total
+          style="float: right;margin-top: 10px" @on-change="doPageChange"></Page>
     <Modal title="广告详情" v-model="isAdInfo" width="900px">
       <Form >
         <Row :gutter="16">
@@ -109,13 +115,13 @@
         delTagRecord:null,
         delTag:false,
         uploadList:[],
-        isAdInfo:[],
+        isAdInfo:false,
         tagList: [
           { type: 'index', width: 60,  align: 'center' },
-          { title: '广告',key: 'col_1',align: 'center'},
+          { title: '广告',key: 'title',align: 'center'},
           { title: '广告类型', key: 'col_2',  align: 'center'},
           { title: '创建时间', key: 'col_3', align: 'center'},
-          { title: '有效期', key: 'col_4', align: 'center'},
+          { title: '有效期', key: 'deadline', align: 'center'},
           { title: '发布状态', key: 'col_5', align: 'center'},
 
           { title: '操作', key: 'action', width: 180, align: 'center',
@@ -131,13 +137,7 @@
             }}
         ],
         ListData: [
-          {
-            col_1:"测试广告",
-            col_2:"xxx",
-            col_3:"2018-12-12",
-            col_4:"2018-12-12",
-            col_5:"已发布",
-          }
+
         ],
         ruleValidate: {
           tagName: [{required: true, message: '标签名称不能为空', trigger: 'blur'}],
@@ -146,6 +146,28 @@
       }
     },
     methods: {
+
+      doPageChange(pagenumber) {
+        this.doAdList(pagenumber, this.pageSize);
+      },
+
+      doAdList(pageNo,pageSize){
+        let param = {
+          pageNo:pageNo,
+          pageSize:pageSize
+        }
+        this.$api.getAddList(param).then(res => {
+          this.ListData = [];
+
+          if(res.status == this.$api.SUCCESS){
+
+            this.ListData = res.result;
+
+          }else{
+            // swal(res.message);
+          }
+        })
+      },
       doSearchReset(name){
         this.scoreSearch['name'] = '';
         this.scoreSearch['stationName'] = '';
@@ -153,11 +175,14 @@
 
       search(startIndex , endIndex){
       },
+
+      show(row){
+        this.isAdInfo = true;
+      }
     },
     created(){
-      this.uploadList = this.$refs.adUpload.fileList;
-      this.doSearchReset()
-      this.search()
+
+      this.doAdList(this.$table.INIT_PAGE_NO, this.$table.INIT_PAGE_SIZE);
     }
   }
 </script>

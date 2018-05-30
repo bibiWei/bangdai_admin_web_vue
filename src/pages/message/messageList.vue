@@ -25,8 +25,8 @@
     </Form>
     <Table border :columns="tagList" :data="ListData" style="margin-top: 20px"></Table>
     <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
-    <Modal title="消息编辑" v-model="isAdd" width="900px">
-      <Form>
+    <Modal title="消息编辑" v-model="isAdd" width="900px" @on-ok="addMessage" >
+      <Form v-model="formMessage">
         <Row :gutter="16">
           <Col span="24">
             <FormItem label="标题" prop="sort" >
@@ -49,13 +49,15 @@
           </Col>
           <Col span="24">
             <FormItem label="内容" label-position="top" >
-              <vue-editor  style="margin-top: 35px"></vue-editor>
+              <vue-editor  style="margin-top: 35px"  v-model="formMessage.msg"></vue-editor>
             </FormItem>
           </Col>
         </Row>
       </Form>
     </Modal>
 
+    <Page :total="total" :page-size="pageSize" size="small" show-elevator show-sizer show-total
+          style="float: right;margin-top: 10px" @on-change="doPageChange"></Page>
   </div>
 </template>
 
@@ -77,6 +79,9 @@
           stationName:'',
           name:''
         },
+        formMessage:{
+          msg:''
+        },
         total:0,
         pageSize:10,
         tagInfo:false,
@@ -85,30 +90,31 @@
         delTag:false,
         tagList: [
           { type: 'index', width: 60,  align: 'center' },
-          { title: '标题',key: 'col_1',align: 'center'},
+          { title: '标题',key: 'msg',align: 'center'},
           { title: '创建人', key: 'col_2',  align: 'center'},
           { title: '创建日期', key: 'col_3', align: 'center'},
           { title: '发布日期', key: 'col_3', align: 'center'},
           { title: '推送日期', key: 'col_4', align: 'center'},
-          { title: '状态', key: 'col_5', align: 'center'},
+          { title: '状态', key: 'statusName', align: 'center'},
           { title: '操作', key: 'action', width: 180, align: 'center',
             render: (h, params) => {
-              return h('div', [
-                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.showEdit(params.row) } } }, '详情'),
-                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.show(params.row) } } }, '推送'),
-              ]);
+              if(params.row.status == 1){
+                return h('div', [
+                  h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
+                    on: { click: () => { this.showEdit(params.row) } } }, '详情'),
+                  h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
+                    on: { click: () => { this.pushMessage(params.row) } } }, '推送'),
+                ]);
+              }else{
+                return h('div', [
+                  h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
+                    on: { click: () => { this.showEdit(params.row) } } }, '详情'),
+                ]);
+              }
             }}
         ],
         ListData: [
-          {
-            col_1:"第一个标题",
-            col_2:"xxx",
-            col_3:"2018-12-12",
-            col_4:"2018-12-13",
-            col_5:"已推送",
-          }
+
         ],
         ruleValidate: {
           tagName: [{required: true, message: '标签名称不能为空', trigger: 'blur'}],
@@ -117,6 +123,10 @@
       }
     },
     methods: {
+      doPageChange(pagenumber) {
+        this.getMessageList(pagenumber, this.pageSize);
+      },
+
       doSearchReset(name){
         this.scoreSearch['name'] = '';
         this.scoreSearch['stationName'] = '';
@@ -126,6 +136,53 @@
       showAdd(){
         this.isAdd = true;
       },
+
+      addMessage(){
+        this.$api.doMessageAdd(this.formMessage).then(res => {
+          if(res.status == this.$api.SUCCESS){
+            this.getMessageList(this.$table.INIT_PAGE_NO, this.$table.INIT_PAGE_SIZE);
+
+          }else{
+            // swal(res.message);
+          }
+        })
+      },
+
+      pushMessage(row){
+        this.$api.doMessagePush(row.id).then(res => {
+          if(res.status == this.$api.SUCCESS){
+            this.getMessageList(this.$table.INIT_PAGE_NO, this.$table.INIT_PAGE_SIZE);
+
+          }else{
+            // swal(res.message);
+          }
+        })
+      },
+
+
+
+      getMessageList(pageNo,pageSize){
+        let param = {
+          pageNo:pageNo,
+          pageSize:pageSize
+        }
+        this.$api.getMessageList(param).then(res => {
+          this.ListData = [];
+          if(res.status == this.$api.SUCCESS){
+
+            this.ListData = res.result;
+            for(var data of this.ListData){
+              if(data.status == 1){
+                 data.statusName = "未推送";
+              }else if (data.status == 2){
+                data.statusName = "已推送";
+              }
+            }
+          }else{
+          }
+        })
+      },
+
       showEdit(){
         this.isAdd = true;
       }
@@ -133,6 +190,7 @@
     created(){
       this.doSearchReset()
       this.search()
+      this.getMessageList(this.$table.INIT_PAGE_NO, this.$table.INIT_PAGE_SIZE);
     }
   }
 </script>

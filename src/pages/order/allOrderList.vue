@@ -104,7 +104,8 @@
       },
 
       show(row){
-        this.$router.push({path:"/order/orderDetail"})
+        localStorage.setItem("orderInfo",JSON.stringify(row));
+        this.$router.push({path:"/order/orderDetail/" + row.id})
       },
       search(startIndex , endIndex){
       },

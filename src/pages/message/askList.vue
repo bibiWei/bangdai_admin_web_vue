@@ -26,30 +26,20 @@
     <Table border :columns="tagList" :data="ListData"></Table>
     <Page :total="total" size="small" show-elevator show-sizer style="float: right;margin-top: 10px"></Page>
     <Modal title="聊天窗口" v-model="isChatShow" width="900px">
-      <div id="chatApp">
-        <div class="sidebar">
+      <chat id="chat">
 
-          <Card></Card>
-          <List></List>
-        </div>
-        <div class="main">
-          <Message></Message>
-          <Text></Text>
-        </div>
-      </div>
+      </chat>
     </Modal>
   </div>
 </template>
 <script>
   import swal from 'sweetalert2'
-  import Card from '../../components/chat/card.vue';
-  import List from '../../components/chat/list.vue';
-  import Text from '../../components/chat/text.vue';
-  import Message from '../../components/chat/message.vue';
+
+  import chat from '../../components/chat/app.vue';
 
   export default {
     components: {
-      Card, List, Text, Message
+      chat
     },
 
     data () {

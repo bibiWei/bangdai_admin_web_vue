@@ -26,6 +26,7 @@ import filters from "./filters";
 import commonProperties from "./common/commonProperties.js"
 import validate from "../static/util/index"
 
+
 import elementDataset from "element-dataset"
 
 Vue.use(commonProperties);

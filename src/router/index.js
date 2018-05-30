@@ -41,7 +41,7 @@ const routes = [
       {path: '/message/disputeList', component: disputeList},
       {path: '/evaluate/evaluateList', component: evaluateList},
       {path: '/order/allOrderList', component: allOrderList},
-      {path: '/order/orderDetail', component: orderDetail},
+      {path: '/order/orderDetail/:id', component: orderDetail},
       {path: '/message/circleList', component: circleList},
 
     ]

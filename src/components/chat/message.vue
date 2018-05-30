@@ -1,143 +1,118 @@
 <script>
-
-  export default {
-    data(){
-      return{
-        user: {
-          name: 'coffce',
-          img: '../../static/img/1.jpg'
-        },
-        session: [
-          {
-            id: 1,
-            user: {
-              name: '示例介绍',
-              img: '../../static/img/2.png'
-            },
-            messages: [
-              {
-                content: 'Hello，这是一个基于Vue + Vuex + Webpack构建的简单chat示例，聊天记录保存在localStorge, 有什么问题可以通过Github Issue问我。',
-                date: "2017-12-12 09:00:00"
-              }, {
-                content: '项目地址: https://github.com/coffcer/vue-chat',
-                date: "2017-12-12 09:09:00"
-              }
-            ]
-          },
-          {
-            id: 2,
-            user: {
-              name: 'webpack',
-              img: '../../static/img/3.jpg'
-            },
-            messages: []
-          }
-        ]
-      }
-    },
-    filters: {
-        // 将日期过滤为 hour:minutes
-        time (date) {
-            if (typeof date === 'string') {
-                date = new Date(date);
+    export default {
+        props: ['session', 'user', 'userList'],
+        computed: {
+            sessionUser () {
+                let users = this.userList.filter(item => item.id === this.session.userId);
+                return users[0];
             }
-            return date.getHours() + ':' + date.getMinutes();
+        },
+        filters: {
+            // 筛选出用户头像
+            avatar (item) {
+                // 如果是自己发的消息显示登录用户的头像
+                let user = item.self ? this.user : this.sessionUser;
+                return user && user.img;
+            },
+            // 将日期过滤为 hour:minutes
+            time (date) {
+                if (typeof date === 'string') {
+                    date = new Date(date);
+                }
+                return date.getHours() + ':' + date.getMinutes();
+            }
+        },
+        directives: {
+            // 发送消息后滚动到底部
+            'scroll-bottom' () {
+                Vue.nextTick(() => {
+                    this.el.scrollTop = this.el.scrollHeight - this.el.clientHeight;
+                });
+            }
         }
-    },
-
-    directives: {
-        // 发送消息后滚动到底部
-        'scroll-bottom' () {
-//            this.vm.$nextTick(() => {
-//                this.el.scrollTop = this.el.scrollHeight - this.el.clientHeight;
-//            });
-        }
-    }
-
-};
+    };
 </script>
+
 <template>
-<div class="message" v-scroll-bottom="session.messages">
-    <ul v-if="session">
-        <li v-for="item in session.messages">
-            <p class="time">
-                <span>{{ item.date | time }}</span>
-            </p>
-            <div class="main" :class="{ self: item.self }">
-                <img class="avatar" width="30" height="30" :src="item.self ? user.img : session.user.img" />
-                <div class="text">{{ item.content }}</div>
-            </div>
-        </li>
-    </ul>
-</div>
+    <div class="m-message" v-scroll-bottom="session.messages">
+        <ul>
+            <li v-for="item in session.messages">
+                <p class="time"><span>{{item.date | time}}</span></p>
+                <div class="main" :class="{ self: item.self }">
+                    <img class="avatar" width="30" height="30" :src="item | avatar" />
+                    <div class="text">{{item.text}}</div>
+                </div>
+            </li>
+        </ul>
+    </div>
 </template>
 
-<style lang="less" scoped>
-.message {
-    padding: 10px 15px;
-    overflow-y: scroll;
-
-    li {
-        margin-bottom: 15px;
-    }
-    .time {
-        margin: 7px 0;
-        text-align: center;
-
-        > span {
-            display: inline-block;
-            padding: 0 18px;
-            font-size: 12px;
-            color: #fff;
-            border-radius: 2px;
-            background-color: #dcdcdc;
+<style lang="less">
+    .m-message {
+        padding: 10px 15px;
+        overflow-y: scroll;
+        
+        li {
+            margin-bottom: 15px;
         }
-    }
-    .avatar {
-        float: left;
-        margin: 0 10px 0 0;
-        border-radius: 3px;
-    }
-    .text {
-        display: inline-block;
-        position: relative;
-        padding: 0 10px;
-        max-width: ~'calc(100% - 40px)';
-        min-height: 30px;
-        line-height: 2.5;
-        font-size: 12px;
-        text-align: left;
-        word-break: break-all;
-        background-color: #fafafa;
-        border-radius: 4px;
-
-        &:before {
-            content: " ";
-            position: absolute;
-            top: 9px;
-            right: 100%;
-            border: 6px solid transparent;
-            border-right-color: #fafafa;
+        .time {
+            margin: 7px 0;
+            text-align: center;
+            
+            > span {
+                display: inline-block;
+                padding: 0 18px;
+                font-size: 12px;
+                color: #fff;
+                border-radius: 2px;
+                background-color: #dcdcdc;
+            }
         }
-    }
-
-    .self {
-        text-align: right;
-
         .avatar {
-            float: right;
-            margin: 0 0 0 10px;
+            float: left;
+            margin: 0 10px 0 0;
+            border-radius: 3px;
         }
         .text {
-            background-color: #b2e281;
-
+            display: inline-block;
+            position: relative;
+            padding: 0 10px;
+            max-width: ~'calc(100% - 40px)';
+            min-height: 30px;
+            line-height: 2.5;
+            font-size: 12px;
+            text-align: left;
+            word-break: break-all;
+            background-color: #fafafa;
+            border-radius: 4px;
+            
             &:before {
-                right: inherit;
-                left: 100%;
-                border-right-color: transparent;
-                border-left-color: #b2e281;
+                content: " ";
+                position: absolute;
+                top: 9px;
+                right: 100%;
+                border: 6px solid transparent;
+                border-right-color: #fafafa;
+            }
+        }
+        
+        .self {
+            text-align: right;
+            
+            .avatar {
+                float: right;
+                margin: 0 0 0 10px;
+            }
+            .text {
+                background-color: #b2e281;
+                
+                &:before {
+                    right: inherit;
+                    left: 100%;
+                    border-right-color: transparent;
+                    border-left-color: #b2e281;
+                }
             }
         }
     }
-}
 </style>

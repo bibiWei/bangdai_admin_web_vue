@@ -17,7 +17,7 @@
             <span >订单编号:</span>
           </Col>
           <Col span="4">
-          <span>0000019233232</span>
+          <span >{{orderInfoBg.orderNo}}</span>
           </Col>
         </Col>
         <Col span="24" style="margin-top: 10px">
@@ -33,29 +33,107 @@
             <span >订单金额:</span>
           </Col>
           <Col span="4">
-            <span class="price-font">222.3/RMB</span>
+        <span class="price-font"><span>{{orderInfoBg.negotiatePrice}}</span>/RMB</span>
           </Col>
         </Col>
       </Row>
 
       <div style="margin-left: 100px;margin-right: 100px;margin-top: 50px">
-        <Steps :current="1" >
-          <Step title="已下单" content="xxxxxx"></Step>
-          <Step title="已支付" content="xxxxxx"></Step>
-          <Step title="已发货" content="xxxxxx"></Step>
-          <Step title="已完成" content="xxxxxx"></Step>
+        <Steps :current="orderInfoBg.status" >
+          <Step title="已下单" content=""></Step>
+          <Step title="已支付" content=""></Step>
+          <Step title="已发货" content=""></Step>
+          <Step title="已完成" content=""></Step>
         </Steps>
       </div>
       <Card :bordered="false" class="top-20">
         <p slot="title">物流详情</p>
         <Tabs value="name1" >
-          <TabPane label="求带人" name="name1">
+          <TabPane label="求带信息" name="name1">
             <Card :bordered="false" class="top-20">
               <p slot="title">联系信息</p>
+              <Row>
+                <Col span="8">
+                  <span class="expand-key">出发地: </span>
+                 <span class="expand-value">{{ orderInfoBg.reqBringVo.departureCountry }} - {{ orderInfoBg.reqBringVo.departureProvince }} - {{ orderInfoBg.reqBringVo.departureCity }}</span>
+                </Col>
+                <Col span="8">
+                  <span class="expand-key">目的地: </span>
+                  <span class="expand-value">{{ orderInfoBg.reqBringVo.arrivalCountry }} - {{ orderInfoBg.reqBringVo.arrivalProvince }} - {{ orderInfoBg.reqBringVo.arrivalCity }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">截止时间: </span>
+                <span class="expand-value">{{ orderInfoBg.reqBringVo.deadline }}</span>
+                </Col>
+              </Row>
+              <Row style="margin-top: 20px">
+                <Col span="8">
+                <span class="expand-key">求带人: </span>
+                <span class="expand-value">{{ orderInfoBg.reqBringVo.userName }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">求带人电话: </span>
+                <span class="expand-value">{{ orderInfoBg.reqBringVo.userPhone }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">求带类型: </span>
+                <span class="expand-value">{{ orderInfoBg.reqBringVo.mateType }}</span>
+                </Col>
+              </Row>
+              <Row style="margin-top: 20px">
+                <Col span="8">
+                <span class="expand-key">求带价格: </span>
+                <span class="expand-value">{{ orderInfoBg.reqBringVo.price }} {{ orderInfoBg.reqBringVo.ccy }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">求带人重量: </span>
+                <span class="expand-value">{{ orderInfoBg.reqBringVo.weight }}</span>
+                </Col>
+              </Row>
             </Card>
           </TabPane>
-          <TabPane label="帮带人" name="name2">
-
+          <TabPane label="帮带信息" name="name2">
+            <Card :bordered="false" class="top-20">
+              <p slot="title">联系信息</p>
+              <Row>
+                <Col span="8">
+                <span class="expand-key">出发地: </span>
+                <span class="expand-value">{{ orderInfoBg.helpBringVo.departureCountry }} - {{ orderInfoBg.helpBringVo.departureProvince }} - {{ orderInfoBg.helpBringVo.departureCity }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">目的地: </span>
+                <span class="expand-value">{{ orderInfoBg.helpBringVo.arrivalCountry }} - {{ orderInfoBg.helpBringVo.arrivalProvince }} - {{ orderInfoBg.helpBringVo.arrivalCity }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">出发日期: </span>
+                <span class="expand-value">{{ orderInfoBg.helpBringVo.departureDate }}</span>
+                </Col>
+              </Row>
+              <Row style="margin-top: 20px">
+                <Col span="8">
+                <span class="expand-key">帮带人: </span>
+                <span class="expand-value">{{ orderInfoBg.helpBringVo.userName }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">帮带人电话: </span>
+                <span class="expand-value">{{ orderInfoBg.helpBringVo.userPhone }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">帮带类型: </span>
+                <span class="expand-value">{{ orderInfoBg.helpBringVo.mateType }}</span>
+                </Col>
+              </Row>
+              <Row style="margin-top: 20px">
+                <Col span="8">
+                <span class="expand-key">帮带价格: </span>
+                <span class="expand-value">{{ orderInfoBg.helpBringVo.price }} {{ orderInfoBg.reqBringVo.ccy }}</span>
+                </Col>
+                <Col span="8">
+                <span class="expand-key">帮带人重量: </span>
+                <span class="expand-value">{{ orderInfoBg.helpBringVo.weight }}</span>
+                </Col>
+              </Row>
+            </Card>
           </TabPane>
         </Tabs>
       </Card>
@@ -70,68 +148,26 @@
     components: {},
     data () {
       return {
-        scoreSearch:{
-          stationName:'',
-          name:''
-        },
-        total:0,
-        pageSize:10,
-        tagInfo:false,
-        delTagRecord:null,
-        delTag:false,
-        tagList: [
-          { type: 'index', width: 60,  align: 'center' },
-          { title: '订单编号',key: 'col_1',align: 'center'},
-          { title: '起始地', key: 'col_2',  align: 'center'},
-          { title: '目的地', key: 'col_3', align: 'center'},
-          { title: '出发时间', key: 'col_4', align: 'center'},
-          { title: '到达时间', key: 'col_5', align: 'center'},
-          { title: '帮带人', key: 'col_6', align: 'center'},
-          { title: '求带人', key: 'col_7', align: 'center'},
-          { title: '订单价格/RMB', width:120, key: 'col_8', align: 'center'},
-          { title: '状态', key: 'col_9', align: 'center'},
-          { title: '操作', key: 'action', width: 180, align: 'center',
-            render: (h, params) => {
-              return h('div', [
-                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.show(params.row) } } }, '详情'),
-                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.show(params.row) } } }, '撤单'),
-              ]);
-            }}
-        ],
-        ListData: [
-          {
-            col_1:"order_0001",
-            col_2:"北京",
-            col_3:"棉花堡",
-            col_4:"2018-12-12",
-            col_5:"2018-12-15",
-            col_6:"小李",
-            col_7:"小王",
-            col_8:"22.3",
-            col_9:"待支付",
-          }
-        ],
-        ruleValidate: {
-          tagName: [{required: true, message: '标签名称不能为空', trigger: 'blur'}],
-          tagRemark:[{type:"string",max: 400, message: '备注名称必须少于400个字符', trigger: 'blur'}]
-        },
+
+
+        orderInfoBg:{
+
+        }
+
       }
     },
     methods: {
-      doSearchReset(name){
-        this.scoreSearch['name'] = '';
-        this.scoreSearch['stationName'] = '';
-      },
-
-      search(startIndex , endIndex){
-      },
-
+      getOrderDetailInfo(){
+        let orderInfo = JSON.parse(localStorage.getItem("orderInfo"));
+        this.orderInfoBg = orderInfo;
+        this.orderInfoBg.reqBringVo.deadline = this.orderInfoBg.reqBringVo.deadline.substring(0,19);
+        this.orderInfoBg.helpBringVo.departureDate = this.orderInfoBg.helpBringVo.departureDate.substring(0,19);
+        this.orderInfoBg.helpBringVo.arrivalDate = this.orderInfoBg.helpBringVo.arrivalDate.substring(0,19);
+      }
     },
     created(){
-      this.doSearchReset()
-      this.search()
+
+      this.getOrderDetailInfo();
     }
   }
 </script>

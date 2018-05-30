@@ -243,7 +243,6 @@
         }
         this.$api.doTakingList(param).then(res => {
           this.ListData = [];
-
           if(res.status == this.$api.SUCCESS){
             this.total = res.result.pagination.total;
             this.ListData = res.result.data;

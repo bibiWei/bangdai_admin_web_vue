@@ -38,6 +38,7 @@
     components: {},
     data () {
       return {
+        value:'',
         scoreSearch:{
           stationName:'',
           name:''
@@ -53,27 +54,33 @@
           { title: '手机号', key: 'col_2',  align: 'center'},
           { title: '昵称', key: 'col_3', align: 'center'},
           { title: '账户余额', key: 'col_4', align: 'center'},
-          { title: '提现金额', key: 'col_5', align: 'center'},
+          { title: '提现金额', key: 'amount', align: 'center'},
           { title: '提现后金额', key: 'col_6', align: 'center'},
           { title: '操作', key: 'action', width: 130, align: 'center',
             render: (h, params) => {
-              return h('div', [
-                h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.doAgree(params.row) } } }, '通过'),
-                h('Button', { props: {  type: 'error', size: 'small' }, style: { marginRight: '5px' },
-                  on: { click: () => { this.doRefuse(params.row) } } }, '驳回'),
-              ]);
-            }}
+              if(params.row.status === 1){
+                return h('div', [
+                  h('Button', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
+                    on: { click: () => { this.doAgree(params.row) } } }, '通过'),
+                  h('Button', { props: {  type: 'error', size: 'small' }, style: { marginRight: '5px' },
+                    on: { click: () => { this.doRefuse(params.row) } } }, '驳回'),
+                ]);
+              }else if (params.row.status === 2){
+                return h('div', [
+                  h('span', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' ,color:'red'},
+                    }, '已通过'),
+                ]);
+              }else{
+                return h('div', [
+                  h('span', { props: {  type: 'primary', size: 'small' }, style: { marginRight: '5px' },
+                  }, '已驳回'),
+                ]);
+              }
+            }
+          }
         ],
         ListData: [
-          {
-            col_1:"cosSean",
-            col_2:"18766312029",
-            col_3:"小李",
-            col_4:"3000",
-            col_5:"2000",
-            col_6:"1000",
-          }
+
         ],
         ruleValidate: {
           tagName: [{required: true, message: '标签名称不能为空', trigger: 'blur'}],
@@ -87,9 +94,28 @@
         this.scoreSearch['stationName'] = '';
       },
 
-      search(startIndex , endIndex){
+
+      getWithDrawList(pageNo,pageSize){
+        let param = {
+          pageNo:pageNo,
+          pageSize:pageSize
+        }
+        this.$api.getWithDrawList(param).then(res => {
+          this.ListData = [];
+          if(res.status == this.$api.SUCCESS){
+
+            this.ListData = res.result;
+
+          }else{
+            // swal(res.message);
+          }
+        })
       },
-      doRefuse(){
+
+      loadData() {
+        this.getWithDrawList(this.$table.INIT_PAGE_NO, this.$table.INIT_PAGE_SIZE);
+      },
+      doRefuse(row){
         this.$Modal.confirm({
           render: (h) => {
             return h('Input', {
@@ -102,19 +128,46 @@
               on: {
                 input: (val) => {
                   this.value = val;
-                }
-              }
+                  }
+              },
             })
+          },
+          onOk:() =>{
+            if(this.value == ""){
+              alert("请您输入驳回理由");
+            }else{
+              let param = {
+                rejectReason:this.value,
+                id:row.id
+              }
+              this.$api.doRejectWithDraw(param).then(res => {
+                if(res.status == this.$api.SUCCESS){
+                  swal({text: '驳回成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+                }else{
+                  // swal(res.message);
+                }
+              })
+            }
           }
+
         })
       },
-      doAgree(){
-        swal({text: '审核成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+      doAgree(row){
+        var param = {
+          id : row.id
+        }
+        this.$api.doAgreeWithDraw(param).then(res => {
+          if(res.status == this.$api.SUCCESS){
+            swal({text: '审核成功!', type: 'success', showCancelButton: false, width: 300}).then((isConfirm) => {});
+          }else{
+          }
+        })
+
       }
     },
     created(){
       this.doSearchReset()
-      this.search()
+      this.loadData()
     }
   }
 </script>

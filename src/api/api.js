@@ -21,6 +21,9 @@ var auth   = require("./content/auth")
 var circle = require("./content/circle")
 var order = require("./content/order")
 var exchange = require("./content/exchange")
+var ad = require("./content/ad")
+var message = require("./content/message")
+var withDraw = require("./content/withDraw")
 
 const login = params => {
   let requestmethod = "post"
@@ -116,6 +119,9 @@ const doBuyingList = buying.getBuyingList;
 const doBuyingDel  = buying.doBuyingDel;
 const doTakingList = taking.getTakingList;
 const doTakingDel = taking.doTakingDel;
+const getTakingInfo = taking.getTakingInfo;
+const doTicketAgree = taking.doTicketAgree;
+const doRejectTicket = taking.doRejectTicket;
 const doAuthList = auth.getAuthList;
 const doAuthPass = auth.doAuthPass;
 const doAuthReject = auth.doAuthReject;
@@ -126,6 +132,14 @@ const addCircle = circle.addCircle;
 const getCircleInfo = circle.getCircleInfo;
 const getAllOrderList = order.getAllOrderList;
 const getExchangeList = exchange.getExchangeList;
+const getAddList = ad.getAddList;
+const doMessageAdd = message.doMessageAdd;
+const getMessageList = message.getMessageList;
+const doMessagePush = message.doMessagePush;
+const getWithDrawList = withDraw.getWithDrawList;
+const doRejectWithDraw = withDraw.doRejectWithDraw;
+const doAgreeWithDraw = withDraw.doAgreeWithDraw;
+
 
 const SUCCESS = 1;
 
@@ -145,7 +159,8 @@ const apiList = {
   doBrandInfo,doBrandDel,doBrandSave,brandUploadURL,getBrandlistWithGroup,
   doProductList,getBrandList,getProductById,getProductTypeByCateId,getProductClass,getAttrList,doCateList,
   doBuyingList,doBuyingDel,doTakingList,doTakingDel,doAuthList,doAuthPass,doAuthReject,doUserList,doAuthDetail,getCircleList,
-  addCircle,getCircleInfo,getAllOrderList,getExchangeList
+  addCircle,getCircleInfo,getAllOrderList,getExchangeList,getAddList,doMessageAdd,getMessageList,doMessagePush,getWithDrawList,
+  doRejectWithDraw,doAgreeWithDraw,getTakingInfo,doTicketAgree,doRejectTicket
 }
 
 
